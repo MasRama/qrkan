@@ -22,13 +22,13 @@ Gunakan sebagai panduan urutan kerja, bukan aturan kaku. Setiap bullet bisa dija
   - [x] Tabel `checkin_logs`
     - [x] `id`, `ticket_id`, `gate_name`/`gate_id`, `operator_id`, `checkin_at`.
 
-- [ ] **Buat migrasi Knex**
+- [x] **Buat migrasi Knex**
   - [x] Tambahkan file migrasi untuk setiap tabel.
   - [x] Jalankan `npx knex migrate:latest`.
   - [x] Cek struktur tabel di SQLite (via tool/CLI) untuk memastikan field sesuai.
 
-- [ ] **(Opsional) Seeder minimal**
-  - [ ] Buat seeder/manual insert untuk 1 `super_admin` default.
+- [x] **(Opsional) Seeder minimal**
+  - [x] Buat seeder/manual insert untuk 1 `super_admin` default.
 
 ---
 
