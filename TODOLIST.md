@@ -40,8 +40,8 @@ Gunakan sebagai panduan urutan kerja, bukan aturan kaku. Setiap bullet bisa dija
 
 - [ ] **Role & otorisasi**
   - [x] Tambahkan middleware untuk cek role (`super_admin`, `organizer`, `gate_operator`).
-  - [ ] Lindungi route dashboard, manajemen event, manajemen peserta.
-  - [ ] Batasi halaman scan hanya untuk `gate_operator` (dan event/gate terkait).
+  - [x] Lindungi route dashboard, manajemen event, manajemen peserta.
+  - [x] Batasi halaman scan hanya untuk `gate_operator` (dan event/gate terkait, dengan `super_admin` sebagai override).
 
 ---
 
@@ -66,7 +66,7 @@ Gunakan sebagai panduan urutan kerja, bukan aturan kaku. Setiap bullet bisa dija
 
 ## Fase 4 – Manajemen Peserta & Ticket
 
-- [ ] **Backend: Participant & Ticket service**
+- [x] **Backend: Participant & Ticket service**
   - [x] Endpoint untuk menambah peserta ke event (input manual).
   - [ ] (Opsional) Endpoint untuk import peserta dari CSV.
   - [ ] Saat peserta ditambahkan:
@@ -95,7 +95,7 @@ Gunakan sebagai panduan urutan kerja, bukan aturan kaku. Setiap bullet bisa dija
 
 ## Fase 5 – Halaman Scan Gate (Check-in)
 
-- [ ] **Backend: endpoint verifikasi tiket**
+- [x] **Backend: endpoint verifikasi tiket**
   - [x] Route untuk menerima token dari QR (GET/POST).
   - [x] Logika verifikasi:
     - [x] Cek tiket ada & milik event yang sesuai.
@@ -116,41 +116,41 @@ Gunakan sebagai panduan urutan kerja, bukan aturan kaku. Setiap bullet bisa dija
     - [x] Sudah check-in sebelumnya (warna kuning/merah + waktu check-in).
     - [x] Tiket invalid (merah).
 
-- [ ] **Handling concurrency**
-  - [ ] Pastikan double-scan cepat pada ticket yang sama tetap aman (gunakan transaksi atau pengecekan status atomik di DB).
+- [x] **Handling concurrency**
+  - [x] Pastikan double-scan cepat pada ticket yang sama tetap aman (gunakan transaksi atau pengecekan status atomik di DB).
 
 ---
 
 ## Fase 6 – Dashboard & Laporan
 
-- [ ] **Ringkasan per event**
-  - [ ] Hitung total tiket.
-  - [ ] Hitung total `checked_in`.
-  - [ ] Hitung persentase kehadiran.
+- [x] **Ringkasan per event**
+  - [x] Hitung total tiket.
+  - [x] Hitung total `checked_in`.
+  - [x] Hitung persentase kehadiran.
 
-- [ ] **Daftar peserta hadir/tidak hadir**
-  - [ ] Query peserta yang memiliki ticket `checked_in`.
-  - [ ] Query peserta dengan ticket bukan `checked_in`.
+- [x] **Daftar peserta hadir/tidak hadir**
+  - [x] Query peserta yang memiliki ticket `checked_in`.
+  - [x] Query peserta dengan ticket bukan `checked_in`.
 
-- [ ] **UI laporan**
-  - [ ] Halaman dashboard untuk organizer.
-  - [ ] Tabel + filter (nama, email, status kehadiran).
+- [x] **UI laporan**
+  - [x] Halaman dashboard untuk organizer.
+  - [x] Tabel + filter (nama, email, status kehadiran).
   - [ ] (Opsional) Tombol export CSV.
 
 ---
 
 ## Fase 7 – Keamanan & Kualitas
 
-- [ ] **Keamanan token & QR**
-  - [ ] Pastikan token sulit ditebak (UUID v4/v7 atau kombinasi hash + secret).
-  - [ ] Jangan menaruh data sensitif langsung di QR; gunakan token yang di-lookup di server.
+- [x] **Keamanan token & QR**
+  - [x] Pastikan token sulit ditebak (UUID v4/v7 atau kombinasi hash + secret).
+  - [x] Jangan menaruh data sensitif langsung di QR; gunakan token yang di-lookup di server.
 
 - [ ] **Validasi & error handling**
   - [ ] Validasi input di semua form (event, peserta, scan).
   - [ ] Tangani error dengan response yang konsisten (kode status + pesan).
 
-- [ ] **Rate limiting endpoint scan** (opsional)
-  - [ ] Tambahkan mekanisme rate limit pada route verifikasi tiket.
+- [x] **Rate limiting endpoint scan** (opsional)
+  - [x] Tambahkan mekanisme rate limit pada route verifikasi tiket.
 
 - [ ] **Audit log (opsional)**
   - [ ] Simpan informasi siapa yang membuat/mengubah event, menambahkan peserta, dll.

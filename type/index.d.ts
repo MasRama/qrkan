@@ -15,3 +15,4 @@ export interface Request extends Request {
 }
 
 declare module "qrcode";
+declare module "html5-qrcode";

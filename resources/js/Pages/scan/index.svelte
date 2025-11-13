@@ -1,5 +1,7 @@
 <script>
   import Header from '../../Components/Header.svelte';
+  import { onDestroy } from 'svelte';
+  import { Html5QrcodeScanner } from 'html5-qrcode';
 
   export let event;
 
@@ -9,6 +11,8 @@
   let loading = false;
   let result = null;
   let error = null;
+  let scannerEnabled = false;
+  let scannerInstance = null;
 
   async function verify() {
     loading = true;
@@ -44,6 +48,45 @@
     if (status === 'already_checked_in') return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100';
     return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100';
   }
+
+  function startScanner() {
+    if (scannerEnabled || typeof window === 'undefined') return;
+
+    scannerEnabled = true;
+    error = null;
+
+    const config = {
+      fps: 10,
+      qrbox: { width: 250, height: 250 },
+      aspectRatio: 1.0,
+    };
+
+    scannerInstance = new Html5QrcodeScanner('qr-reader', config, false);
+
+    scannerInstance.render(onScanSuccess, onScanFailure);
+  }
+
+  function stopScanner() {
+    if (!scannerInstance) return;
+    scannerInstance.clear().catch(() => {});
+    scannerInstance = null;
+    scannerEnabled = false;
+  }
+
+  function onScanSuccess(decodedText) {
+    token = decodedText;
+    stopScanner();
+  }
+
+  function onScanFailure() {
+    // abaikan error minor saat scan
+  }
+
+  onDestroy(() => {
+    if (scannerInstance) {
+      scannerInstance.clear().catch(() => {});
+    }
+  });
 </script>
 
 <Header group="scan" />
@@ -105,9 +148,38 @@
         <p class="text-[11px] text-gray-500 dark:text-gray-400">Scan QR di device lain dan paste token di sini sebagai fallback manual.</p>
       </div>
 
-      <!-- Placeholder area for future camera integration -->
-      <div class="mt-4 p-3 rounded-lg border border-dashed border-gray-300 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400">
-        Area kamera untuk scan QR bisa diintegrasikan di sini menggunakan library JS (mis. html5-qrcode atau ZXing).
+      <div class="mt-4 space-y-2">
+        <div class="flex items-center justify-between mb-1">
+          <p class="text-xs font-medium text-gray-600 dark:text-gray-300">Scan dengan kamera</p>
+          <div class="flex gap-2">
+            <button
+              type="button"
+              class="px-3 py-1.5 rounded-full text-[11px] font-semibold border border-primary-200 dark:border-primary-800 text-primary-700 dark:text-primary-300 bg-primary-50/60 dark:bg-primary-900/20"
+              on:click={startScanner}
+              disabled={scannerEnabled}
+            >
+              {scannerEnabled ? 'Kamera aktif' : 'Mulai kamera'}
+            </button>
+            {#if scannerEnabled}
+              <button
+                type="button"
+                class="px-3 py-1.5 rounded-full text-[11px] font-semibold border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 bg-gray-50/80 dark:bg-gray-900/40"
+                on:click={stopScanner}
+              >
+                Hentikan
+              </button>
+            {/if}
+          </div>
+        </div>
+
+        <div
+          id="qr-reader"
+          class="rounded-lg border border-dashed border-gray-300 dark:border-gray-700 min-h-[220px] flex items-center justify-center text-[11px] text-gray-500 dark:text-gray-400 bg-gray-50/60 dark:bg-gray-900/40"
+        >
+          {#if !scannerEnabled}
+            Kamera belum aktif. Klik "Mulai kamera" untuk scan QR.
+          {/if}
+        </div>
       </div>
     </div>
 

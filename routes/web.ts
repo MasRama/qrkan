@@ -92,6 +92,8 @@ Route.get("/events/:id/edit", [Auth, Role(["super_admin", "organizer"])] , Event
 Route.post("/events/:id", [Auth, Role(["super_admin", "organizer"])] , EventController.update);
 Route.post("/events/:id/status", [Auth, Role(["super_admin", "organizer"])] , EventController.changeStatus);
 
+Route.get("/events/:id/report", [Auth, Role(["super_admin", "organizer"])] , EventController.report);
+
 Route.get("/events/:eventId/participants", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.index);
 Route.get("/events/:eventId/participants/create", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.create);
 Route.post("/events/:eventId/participants", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.store);

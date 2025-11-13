@@ -5,6 +5,10 @@ import fs from "fs";
 import path from "path";
 import { randomUUID } from "crypto";
 
+const SCAN_WINDOW_MS = 5000;
+const SCAN_MAX_REQUESTS = 15;
+const scanBuckets = new Map<string, { count: number; resetAt: number }>();
+
 class TicketController {
   public async download(request: Request, response: Response) {
     const token = request.params.token as string;
@@ -26,6 +30,25 @@ class TicketController {
   }
 
   public async verify(request: Request, response: Response) {
+    const nowTs = Date.now();
+    const ip = ((request as any).ip || request.headers["x-forwarded-for"] || "unknown") as string;
+    const bucket = scanBuckets.get(ip) || { count: 0, resetAt: nowTs + SCAN_WINDOW_MS };
+
+    if (nowTs > bucket.resetAt) {
+      bucket.count = 0;
+      bucket.resetAt = nowTs + SCAN_WINDOW_MS;
+    }
+
+    if (bucket.count >= SCAN_MAX_REQUESTS) {
+      scanBuckets.set(ip, bucket);
+      return response
+        .status(429)
+        .json({ status: "rate_limited", message: "Terlalu banyak percobaan scan, coba lagi beberapa detik lagi." });
+    }
+
+    bucket.count++;
+    scanBuckets.set(ip, bucket);
+
     const body = await request.json();
     const token = body.token as string;
     const gate_name = body.gate_name as string | undefined;

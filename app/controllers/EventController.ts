@@ -181,6 +181,75 @@ class EventController {
 
     return response.redirect("/events");
   }
+
+  public async report(request: Request, response: Response) {
+    const user = request.user;
+
+    if (!user || (user.role !== "super_admin" && user.role !== "organizer")) {
+      return response.status(403).json({ error: "Unauthorized" });
+    }
+
+    const id = request.params.id as string;
+
+    const event = await DB("events").where("id", id).first();
+
+    if (!event) {
+      return response.status(404).json({ error: "Event not found" });
+    }
+
+    if (user.role === "organizer" && event.organizer_id !== user.id) {
+      return response.status(403).json({ error: "Unauthorized" });
+    }
+
+    const totalTicketsRow = await DB("tickets")
+      .where("event_id", id)
+      .count<{ count: number }>("id as count")
+      .first();
+
+    const totalCheckedRow = await DB("tickets")
+      .where({ event_id: id, status: "checked_in" })
+      .count<{ count: number }>("id as count")
+      .first();
+
+    const totalTickets = Number(totalTicketsRow?.count || 0);
+    const totalChecked = Number(totalCheckedRow?.count || 0);
+    const attendancePercent = totalTickets > 0 ? (totalChecked / totalTickets) * 100 : 0;
+
+    const present = await DB("participants")
+      .join("tickets", "participants.id", "tickets.participant_id")
+      .where("tickets.event_id", id)
+      .where("tickets.status", "checked_in")
+      .select(
+        "participants.id",
+        "participants.name",
+        "participants.email",
+        "participants.phone",
+        "tickets.status as ticket_status",
+        "tickets.token as ticket_token"
+      );
+
+    const absent = await DB("participants")
+      .join("tickets", "participants.id", "tickets.participant_id")
+      .where("tickets.event_id", id)
+      .whereNot("tickets.status", "checked_in")
+      .select(
+        "participants.id",
+        "participants.name",
+        "participants.email",
+        "participants.phone",
+        "tickets.status as ticket_status",
+        "tickets.token as ticket_token"
+      );
+
+    return response.inertia("events/report", {
+      event,
+      totalTickets,
+      totalChecked,
+      attendancePercent,
+      present,
+      absent,
+    });
+  }
 }
 
 export default new EventController();
