@@ -47,45 +47,45 @@ Gunakan sebagai panduan urutan kerja, bukan aturan kaku. Setiap bullet bisa dija
 
 ## Fase 3 – Manajemen Event
 
-- [ ] **Backend: EventController & service**
-  - [ ] Endpoint list event (untuk organizer & admin).
-  - [ ] Endpoint create event (form + store).
-  - [ ] Endpoint edit/update event.
-  - [ ] Endpoint change status event (`draft` → `published` → `closed`).
+- [x] **Backend: EventController & service**
+  - [x] Endpoint list event (untuk organizer & admin).
+  - [x] Endpoint create event (form + store).
+  - [x] Endpoint edit/update event.
+  - [x] Endpoint change status event (`draft` → `published` → `closed`).
 
-- [ ] **Frontend: halaman event (Svelte/Inertia)**
-  - [ ] Halaman daftar event (table + filter by status).
-  - [ ] Halaman create/edit event (form).
-  - [ ] Indikator status event (draft/published/closed) di UI.
+- [x] **Frontend: halaman event (Svelte/Inertia)**
+  - [x] Halaman daftar event (table + filter by status).
+  - [x] Halaman create/edit event (form).
+  - [x] Indikator status event (draft/published/closed) di UI.
 
-- [ ] **Validasi dasar**
-  - [ ] Pastikan tanggal/waktu valid (start <= end).
-  - [ ] Batasi perubahan event jika status sudah `closed`.
+- [x] **Validasi dasar**
+  - [x] Pastikan tanggal/waktu valid (start <= end).
+  - [x] Batasi perubahan event jika status sudah `closed`.
 
 ---
 
 ## Fase 4 – Manajemen Peserta & Ticket
 
 - [ ] **Backend: Participant & Ticket service**
-  - [ ] Endpoint untuk menambah peserta ke event (input manual).
+  - [x] Endpoint untuk menambah peserta ke event (input manual).
   - [ ] (Opsional) Endpoint untuk import peserta dari CSV.
   - [ ] Saat peserta ditambahkan:
-    - [ ] Generate record `ticket` untuk kombinasi `(event, participant)`.
-    - [ ] Generate `token` unik (mis. UUID v7 atau kombinasi Hashids + signature).
-    - [ ] Set status tiket awal `pending`.
+    - [x] Generate record `ticket` untuk kombinasi `(event, participant)`.
+    - [x] Generate `token` unik (mis. UUID v7 atau kombinasi Hashids + signature).
+    - [x] Set status tiket awal `pending`.
 
 - [ ] **QR Code & e-ticket generation (backend)**
-  - [ ] Pilih library generator QR untuk Node.js.
-  - [ ] Buat service untuk:
-    - [ ] Mengenerate QR code image dari `token`.
-    - [ ] Menyimpan file QR/e-ticket ke storage lokal (mis. di folder `public/tickets/` atau sejenis).
-  - [ ] Buat URL public download e-ticket berdasarkan token/slug aman.
+  - [x] Pilih library generator QR untuk Node.js.
+  - [x] Buat service untuk:
+    - [x] Mengenerate QR code image dari `token`.
+    - [x] Menyimpan file QR/e-ticket ke storage lokal (mis. di folder `public/tickets/` atau sejenis).
+  - [x] Buat URL public download e-ticket berdasarkan token/slug aman.
 
-- [ ] **Frontend: Manajemen peserta**
-  - [ ] Halaman daftar peserta per event.
-  - [ ] Form tambah peserta baru.
-  - [ ] Tampilkan status tiket (`pending`, `sent`, `checked_in`).
-  - [ ] Tampilkan link **Download e-ticket** (untuk peserta atau organizer).
+- [x] **Frontend: Manajemen peserta**
+  - [x] Halaman daftar peserta per event.
+  - [x] Form tambah peserta baru.
+  - [x] Tampilkan status tiket (`pending`, `sent`, `checked_in`).
+  - [x] Tampilkan link **Download e-ticket** (untuk peserta atau organizer).
 
 - [ ] **Integrasi channel lain (opsional)**
   - [ ] Desain endpoint/API yang bisa dipakai oleh bot Telegram untuk mengirim e-ticket.
@@ -96,25 +96,25 @@ Gunakan sebagai panduan urutan kerja, bukan aturan kaku. Setiap bullet bisa dija
 ## Fase 5 – Halaman Scan Gate (Check-in)
 
 - [ ] **Backend: endpoint verifikasi tiket**
-  - [ ] Route untuk menerima token dari QR (GET/POST).
-  - [ ] Logika verifikasi:
-    - [ ] Cek tiket ada & milik event yang sesuai.
-    - [ ] Cek event belum `closed`.
-    - [ ] Cek tiket belum `checked_in`.
-  - [ ] Jika valid:
-    - [ ] Update status tiket → `checked_in`.
-    - [ ] Tambah record di `checkin_logs` (waktu, gate, operator).
-  - [ ] Jika tidak valid:
-    - [ ] Kembalikan status error (sudah dipakai / tidak ditemukan / event closed).
+  - [x] Route untuk menerima token dari QR (GET/POST).
+  - [x] Logika verifikasi:
+    - [x] Cek tiket ada & milik event yang sesuai.
+    - [x] Cek event belum `closed`.
+    - [x] Cek tiket belum `checked_in`.
+  - [x] Jika valid:
+    - [x] Update status tiket → `checked_in`.
+    - [x] Tambah record di `checkin_logs` (waktu, gate, operator).
+  - [x] Jika tidak valid:
+    - [x] Kembalikan status error (sudah dipakai / tidak ditemukan / event closed).
 
 - [ ] **Frontend: halaman scan QR**
-  - [ ] Halaman khusus untuk `gate_operator` per event/gate.
+  - [x] Halaman khusus untuk `gate_operator` per event/gate.
   - [ ] Integrasi kamera browser untuk membaca QR (via library JS).
-  - [ ] Fallback input manual token jika kamera tidak tersedia.
-  - [ ] Tampilkan hasil verifikasi secara jelas:
-    - [ ] Sukses (warna hijau, info peserta & event).
-    - [ ] Sudah check-in sebelumnya (warna kuning/merah + waktu check-in).
-    - [ ] Tiket invalid (merah).
+  - [x] Fallback input manual token jika kamera tidak tersedia.
+  - [x] Tampilkan hasil verifikasi secara jelas:
+    - [x] Sukses (warna hijau, info peserta & event).
+    - [x] Sudah check-in sebelumnya (warna kuning/merah + waktu check-in).
+    - [x] Tiket invalid (merah).
 
 - [ ] **Handling concurrency**
   - [ ] Pastikan double-scan cepat pada ticket yang sama tetap aman (gunakan transaksi atau pengecekan status atomik di DB).

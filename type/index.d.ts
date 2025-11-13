@@ -13,3 +13,5 @@ export interface Request extends Request {
     user : any,
     share : any,
 }
+
+declare module "qrcode";

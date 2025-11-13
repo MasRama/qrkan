@@ -30,7 +30,8 @@
     "sharp": "^0.34.4",
     "squirrelly": "^9.1.0",
     "uuid": "^13.0.0",
-    "uuidv7": "^1.0.2"
+    "uuidv7": "^1.0.2",
+    "qrcode": "^1.5.3"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^4.0.0",

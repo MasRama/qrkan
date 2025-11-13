@@ -1,5 +1,10 @@
 import AuthController from "../app/controllers/AuthController"; 
 import Auth from "../app/middlewares/auth"
+import EventController from "../app/controllers/EventController";
+import ParticipantController from "../app/controllers/ParticipantController";
+import TicketController from "../app/controllers/TicketController";
+import ScanController from "../app/controllers/ScanController";
+import Role from "../app/middlewares/role";
 import HomeController from "../app/controllers/HomeController";
 import AssetController from "../app/controllers/AssetController";
 import S3Controller from "../app/controllers/S3Controller";
@@ -61,6 +66,9 @@ Route.post("/forgot-password", AuthController.sendResetPassword);
 Route.get("/reset-password/:id", AuthController.resetPasswordPage);
 Route.post("/reset-password", AuthController.resetPassword);
 
+Route.get("/tickets/:token", TicketController.download);
+Route.post("/scan/verify", [Auth, Role(["gate_operator", "super_admin"])] , TicketController.verify);
+
 /**
  * Protected Routes
  * These routes require authentication
@@ -76,6 +84,19 @@ Route.get("/profile", [Auth], AuthController.profilePage);
 Route.post("/change-profile", [Auth], AuthController.changeProfile);
 Route.post("/change-password", [Auth], AuthController.changePassword);
 Route.delete("/users", [Auth], AuthController.deleteUsers);
+
+Route.get("/events", [Auth, Role(["super_admin", "organizer"])] , EventController.index);
+Route.get("/events/create", [Auth, Role(["super_admin", "organizer"])] , EventController.create);
+Route.post("/events", [Auth, Role(["super_admin", "organizer"])] , EventController.store);
+Route.get("/events/:id/edit", [Auth, Role(["super_admin", "organizer"])] , EventController.edit);
+Route.post("/events/:id", [Auth, Role(["super_admin", "organizer"])] , EventController.update);
+Route.post("/events/:id/status", [Auth, Role(["super_admin", "organizer"])] , EventController.changeStatus);
+
+Route.get("/events/:eventId/participants", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.index);
+Route.get("/events/:eventId/participants/create", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.create);
+Route.post("/events/:eventId/participants", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.store);
+
+Route.get("/events/:eventId/scan", [Auth, Role(["gate_operator", "super_admin"])] , ScanController.page);
 
 /**
  * Static Asset Handling Routes
