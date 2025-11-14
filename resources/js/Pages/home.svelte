@@ -5,6 +5,8 @@
   import { page } from '@inertiajs/svelte'
   import Header from '../Components/Header.svelte'
 
+  let user = $page.props.user
+
   let features = [
     {
       title: 'Kelola event dari satu dashboard',
@@ -143,7 +145,7 @@
 
           <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4">
             <a
-              href="/events"
+              href={user && user.id ? '/dashboard' : '/login'}
               use:inertia
               class="px-6 py-3 rounded-xl bg-primary-600 text-white text-sm sm:text-base font-semibold shadow-lg shadow-primary-500/30 hover:bg-primary-700 transition-all flex items-center justify-center gap-2"
             >
@@ -478,7 +480,7 @@
 
         <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center sm:justify-end">
           <a
-            href="/login"
+            href={user && user.id ? '/dashboard' : '/login'}
             use:inertia
             class="inline-flex items-center justify-center rounded-xl bg-white text-primary-700 px-6 py-3 text-sm sm:text-base font-semibold shadow-md hover:bg-primary-50 transition-colors"
           >

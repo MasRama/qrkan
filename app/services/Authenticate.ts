@@ -62,10 +62,10 @@ class Autenticate {
          user_agent: request.headers["user-agent"],
       });
 
-      // Set cookie with 60-day expiration and redirect to home
+      // Set cookie with 60-day expiration and redirect to dashboard
       response
          .cookie("auth_id", token, 1000 * 60 * 60 * 24 * 60)
-         .redirect("/home");
+         .redirect("/dashboard");
    }
 
    /**

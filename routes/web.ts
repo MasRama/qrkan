@@ -73,12 +73,14 @@ Route.post("/scan/verify", [Auth, Role(["gate_operator", "super_admin"])] , Tick
  * Protected Routes
  * These routes require authentication
  * ------------------------------------------------
- * GET   /home - User dashboard
+ * GET   /dashboard - Main dashboard (events overview)
+ * GET   /home - Legacy user listing dashboard
  * GET   /profile - User profile
  * POST  /change-profile - Update profile
  * POST  /change-password - Change password
  * DELETE /users - Delete users (admin only)
  */
+Route.get("/dashboard", [Auth, Role(["super_admin", "organizer"])] , EventController.index);
 Route.get("/home", [Auth], AuthController.homePage);
 Route.get("/profile", [Auth], AuthController.profilePage);
 Route.post("/change-profile", [Auth], AuthController.changeProfile);

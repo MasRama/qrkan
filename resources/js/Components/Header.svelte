@@ -11,12 +11,28 @@
 
   export let group; 
 
-  const menuLinks = [
-    { href: '/home#features', label: 'Fitur', show: true },
-    { href: '/home#flow', label: 'Alur', show: true },
-    { href: '/home#roles', label: 'Peran', show: true },
-    { href: '/home#cta', label: 'Mulai', show: true }
+  const landingLinks = [
+    { href: '/#features', label: 'Fitur', show: true },
+    { href: '/#flow', label: 'Alur', show: true },
+    { href: '/#roles', label: 'Peran', show: true },
+    { href: '/#cta', label: 'Mulai', show: true }
   ];
+
+  let menuLinks = landingLinks;
+
+  $: {
+    if (group === 'home') {
+      menuLinks = landingLinks;
+    } else {
+      const isLoggedIn = !!(user && user.id);
+      const isOrganizerLike = isLoggedIn && (user.role === 'super_admin' || user.role === 'organizer');
+
+      menuLinks = [
+        { href: '/dashboard', label: 'Dashboard', show: isLoggedIn },
+        { href: '/events', label: 'Event', show: isOrganizerLike }
+      ];
+    }
+  }
  
   function handleLogout() {
     router.post('/logout');
@@ -38,7 +54,7 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="mt-3 flex items-center justify-between rounded-full border border-gray-200/70 dark:border-gray-800/80 bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl shadow-sm shadow-gray-900/5 dark:shadow-black/40 px-3 sm:px-4 py-2.5">
       <div class="flex items-center gap-3">
-        <a href="/home" use:inertia class="flex items-center gap-2">
+        <a href={user && user.id ? '/dashboard' : '/'} use:inertia class="flex items-center gap-2">
           <div class="flex h-8 w-8 items-center justify-center rounded-2xl bg-gradient-to-tr from-primary-600 to-emerald-400 text-xs font-bold uppercase tracking-wide text-white">
             QR
           </div>
