@@ -6,6 +6,10 @@
   export let status = 'all';
 
   let selectedStatus = status || 'all';
+  let deletingId = null;
+  let showToast = false;
+  let toastMessage = '';
+  let toastTimeout;
 
   const statusOptions = [
     { value: 'all', label: 'Semua status' },
@@ -13,6 +17,14 @@
     { value: 'published', label: 'Published' },
     { value: 'closed', label: 'Closed' }
   ];
+
+  const now = Date.now();
+
+  $: totalEvents = events.length;
+  $: draftEvents = events.filter((e) => e.status === 'draft').length;
+  $: publishedEvents = events.filter((e) => e.status === 'published').length;
+  $: closedEvents = events.filter((e) => e.status === 'closed').length;
+  $: upcomingEvents = events.filter((e) => e.start_at && Number(e.start_at) > now).length;
 
   function applyFilter() {
     router.get('/events', { status: selectedStatus }, { preserveState: true, replace: true });
@@ -37,13 +49,69 @@
         return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
     }
   }
+
+  async function deleteEvent(ev) {
+    if (!ev || !ev.id) return;
+    const ok = confirm(`Hapus event "${ev.name}"? Semua peserta & tiket terkait juga akan ikut terhapus.`);
+    if (!ok) return;
+
+    deletingId = ev.id;
+
+    try {
+      const res = await fetch(`/events/${ev.id}`, {
+        method: 'DELETE',
+        headers: {
+          'X-Inertia': 'true',
+          Accept: 'application/json'
+        }
+      });
+
+      if (!res.ok && res.status !== 204) {
+        console.error('Failed to delete event', await res.text());
+        toastMessage = 'Gagal menghapus event';
+        showToast = true;
+      } else {
+        // Hapus dari list lokal supaya UI langsung ter-update tanpa reload
+        events = events.filter((e) => e.id !== ev.id);
+
+        toastMessage = 'Event berhasil dihapus';
+        showToast = true;
+      }
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        showToast = false;
+      }, 2500);
+    } catch (err) {
+      console.error('Delete error', err);
+      toastMessage = 'Terjadi kesalahan saat menghapus';
+      showToast = true;
+    } finally {
+      deletingId = null;
+    }
+  }
 </script>
 
 <Header group="events" />
 
 <div class="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 pt-24 pb-8 sm:pt-28 sm:pb-12">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    {#if showToast}
+      <div class="mb-4">
+        <div class="flex items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 px-3 py-2 text-xs sm:text-sm dark:border-emerald-900 dark:bg-emerald-900/30 dark:text-emerald-100">
+          <span>{toastMessage}</span>
+          <button
+            type="button"
+            class="text-[11px] font-medium underline-offset-2 hover:underline"
+            on:click={() => (showToast = false)}
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+    {/if}
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 sm:mb-6">
       <div>
         <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Manajemen Event</h1>
         <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Kelola event, jadwal, kapasitas dan status publikasinya.</p>
@@ -57,10 +125,31 @@
       </a>
     </div>
 
+    <!-- Summary cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4">
+      <div class="rounded-xl bg-white/80 dark:bg-gray-900/80 border border-gray-200/70 dark:border-gray-800 px-3 py-2.5 sm:px-4 sm:py-3">
+        <p class="text-[11px] font-medium text-gray-500 dark:text-gray-400">Total event</p>
+        <p class="mt-1 text-base sm:text-lg font-semibold text-gray-900 dark:text-white">{totalEvents}</p>
+      </div>
+      <div class="rounded-xl bg-emerald-50/80 dark:bg-emerald-900/40 border border-emerald-200/70 dark:border-emerald-800 px-3 py-2.5 sm:px-4 sm:py-3">
+        <p class="text-[11px] font-medium text-emerald-700 dark:text-emerald-200">Published</p>
+        <p class="mt-1 text-base sm:text-lg font-semibold text-emerald-800 dark:text-emerald-50">{publishedEvents}</p>
+      </div>
+      <div class="rounded-xl bg-yellow-50/80 dark:bg-yellow-900/40 border border-yellow-200/70 dark:border-yellow-800 px-3 py-2.5 sm:px-4 sm:py-3">
+        <p class="text-[11px] font-medium text-yellow-700 dark:text-yellow-200">Draft</p>
+        <p class="mt-1 text-base sm:text-lg font-semibold text-yellow-800 dark:text-yellow-50">{draftEvents}</p>
+      </div>
+      <div class="rounded-xl bg-gray-900/80 dark:bg-gray-900/80 border border-gray-700 px-3 py-2.5 sm:px-4 sm:py-3">
+        <p class="text-[11px] font-medium text-gray-300">Upcoming</p>
+        <p class="mt-1 text-base sm:text-lg font-semibold text-white">{upcomingEvents}</p>
+      </div>
+    </div>
+
     <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
       <div class="flex items-center gap-2">
-        <label class="text-sm font-medium text-gray-700 dark:text-gray-200">Filter status</label>
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-200" for="status-filter">Filter status</label>
         <select
+          id="status-filter"
           bind:value={selectedStatus}
           on:change={applyFilter}
           class="text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
@@ -70,7 +159,9 @@
           {/each}
         </select>
       </div>
-      <p class="text-xs text-gray-500 dark:text-gray-400">Total: {events.length} event</p>
+      <p class="text-xs text-gray-500 dark:text-gray-400">
+        Menampilkan {events.length} event
+      </p>
     </div>
 
     <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/70 shadow-sm">
@@ -108,13 +199,25 @@
                     {event.status}
                   </span>
                 </td>
-                <td class="px-4 py-3 text-right">
+                <td class="px-4 py-3 text-right space-x-2">
                   <a
                     href={`/events/${event.id}/edit`}
                     class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-primary-700 dark:text-primary-300 border border-primary-100 dark:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/30"
                   >
                     Edit
                   </a>
+                  <button
+                    type="button"
+                    on:click={() => deleteEvent(event)}
+                    disabled={deletingId === event.id}
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-red-700 dark:text-red-300 border border-red-100 dark:border-red-900 hover:bg-red-50/80 dark:hover:bg-red-900/30 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                  >
+                    {#if deletingId === event.id}
+                      Menghapus...
+                    {:else}
+                      Delete
+                    {/if}
+                  </button>
                 </td>
               </tr>
             {/each}

@@ -9,9 +9,11 @@
   let end_at = '';
   let capacity = '';
   let error = '';
+  let processing = false;
 
   function submit(e) {
     e.preventDefault();
+    if (processing) return;
     error = '';
 
     const startTs = Number(new Date(start_at).getTime());
@@ -22,14 +24,24 @@
       return;
     }
 
-    router.post('/events', {
-      name,
-      description,
-      location,
-      start_at: startTs,
-      end_at: endTs,
-      capacity: capacity ? Number(capacity) : null
-    });
+    processing = true;
+
+    router.post(
+      '/events',
+      {
+        name,
+        description,
+        location,
+        start_at: startTs,
+        end_at: endTs,
+        capacity: capacity ? Number(capacity) : null
+      },
+      {
+        onFinish: () => {
+          processing = false;
+        }
+      }
+    );
   }
 </script>
 
@@ -107,9 +119,14 @@
         <a href="/events" class="text-sm text-gray-600 dark:text-gray-300 hover:underline">Kembali ke daftar</a>
         <button
           type="submit"
-          class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 shadow-sm hover:shadow-md transition-all"
+          disabled={processing}
+          class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 disabled:hover:bg-primary-600 disabled:opacity-60 disabled:cursor-not-allowed shadow-sm hover:shadow-md transition-all"
         >
-          Simpan Event
+          {#if processing}
+            Menyimpan...
+          {:else}
+            Simpan Event
+          {/if}
         </button>
       </div>
     </form>

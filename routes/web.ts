@@ -1,6 +1,7 @@
 import AuthController from "../app/controllers/AuthController"; 
 import Auth from "../app/middlewares/auth"
 import EventController from "../app/controllers/EventController";
+import DashboardController from "../app/controllers/DashboardController";
 import ParticipantController from "../app/controllers/ParticipantController";
 import TicketController from "../app/controllers/TicketController";
 import ScanController from "../app/controllers/ScanController";
@@ -80,7 +81,7 @@ Route.post("/scan/verify", [Auth, Role(["gate_operator", "super_admin"])] , Tick
  * POST  /change-password - Change password
  * DELETE /users - Delete users (admin only)
  */
-Route.get("/dashboard", [Auth, Role(["super_admin", "organizer"])] , EventController.index);
+Route.get("/dashboard", [Auth, Role(["super_admin", "organizer"])] , DashboardController.index);
 Route.get("/home", [Auth], AuthController.homePage);
 Route.get("/profile", [Auth], AuthController.profilePage);
 Route.post("/change-profile", [Auth], AuthController.changeProfile);
@@ -93,6 +94,7 @@ Route.post("/events", [Auth, Role(["super_admin", "organizer"])] , EventControll
 Route.get("/events/:id/edit", [Auth, Role(["super_admin", "organizer"])] , EventController.edit);
 Route.post("/events/:id", [Auth, Role(["super_admin", "organizer"])] , EventController.update);
 Route.post("/events/:id/status", [Auth, Role(["super_admin", "organizer"])] , EventController.changeStatus);
+Route.delete("/events/:id", [Auth, Role(["super_admin", "organizer"])] , EventController.destroy);
 
 Route.get("/events/:id/report", [Auth, Role(["super_admin", "organizer"])] , EventController.report);
 

@@ -53,6 +53,20 @@ class EventController {
       return response.status(422).json({ error: "Invalid event date range" });
     }
 
+    // Idempotency guard: if an event with the same organizer, name, and time range
+    // already exists, don't create a duplicate. This protects against accidental
+    // double submissions.
+    const existing = await DB("events")
+      .where("organizer_id", user.id)
+      .where("name", body.name)
+      .where("start_at", start_at)
+      .where("end_at", end_at)
+      .first();
+
+    if (existing) {
+      return response.redirect("/events");
+    }
+
     const now = Date.now();
 
     await DB("events").insert({
@@ -178,6 +192,36 @@ class EventController {
     await DB("events")
       .where("id", id)
       .update({ status: nextStatus, updated_at: Date.now() });
+
+    return response.redirect("/events");
+  }
+
+  public async destroy(request: Request, response: Response) {
+    const user = request.user;
+
+    if (!user || (user.role !== "super_admin" && user.role !== "organizer")) {
+      return response.status(403).json({ error: "Unauthorized" });
+    }
+
+    const id = request.params.id as string;
+
+    const event = await DB("events").where("id", id).first();
+
+    if (!event) {
+      return response.status(404).json({ error: "Event not found" });
+    }
+
+    if (user.role === "organizer" && event.organizer_id !== user.id) {
+      return response.status(403).json({ error: "Unauthorized" });
+    }
+
+    await DB("events").where("id", id).delete();
+
+    // When called via Inertia (XHR with X-Inertia header), return 204 so
+    // the frontend can update the list and show a toast without a full reload.
+    if ((request as any).header && request.header("X-Inertia")) {
+      return response.status(204).send();
+    }
 
     return response.redirect("/events");
   }
