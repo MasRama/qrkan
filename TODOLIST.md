@@ -159,9 +159,9 @@ Gunakan sebagai panduan urutan kerja, bukan aturan kaku. Setiap bullet bisa dija
 
 ## Fase 8 – UX & Polishing
 
-- [ ] **Perbaikan UI/UX (mobile-first)**
-  - [ ] Desain layout Svelte + Tailwind dengan pendekatan mobile-first untuk dashboard & terutama halaman scan gate.
-  - [ ] Tambahkan feedback visual (loading state, toast notifikasi, dll.).
+- [x] **Perbaikan UI/UX (mobile-first)**
+  - [x] Desain layout Svelte + Tailwind dengan pendekatan mobile-first untuk dashboard & terutama halaman scan gate.
+  - [x] Tambahkan feedback visual (loading state, toast/pesan notifikasi, dll.).
 
 - [ ] **Desain mobile-first**
   - [ ] Optimalkan seluruh UI untuk layar mobile sebagai target utama, terutama halaman scan (gate operator), lalu pastikan tetap nyaman di tablet & desktop.
