@@ -46,12 +46,25 @@ class EventController {
 
     const body = await request.json();
 
+    const providedId = (body.id as string) || undefined;
+    const eventId = providedId || randomUUID();
+
     const start_at = Number(body.start_at);
     const end_at = Number(body.end_at);
 
     if (!start_at || !end_at || start_at > end_at) {
       return response.status(422).json({ error: "Invalid event date range" });
     }
+
+    // Basic debug log to help trace potential duplicate submissions
+    console.log("[EventController.store] create event", {
+      eventId,
+      providedId,
+      organizer_id: user.id,
+      name: body.name,
+      start_at,
+      end_at,
+    });
 
     // Idempotency guard: if an event with the same organizer, name, and time range
     // already exists, don't create a duplicate. This protects against accidental
@@ -69,19 +82,32 @@ class EventController {
 
     const now = Date.now();
 
-    await DB("events").insert({
-      id: randomUUID(),
-      organizer_id: user.id,
-      name: body.name,
-      description: body.description || null,
-      location: body.location || null,
-      start_at,
-      end_at,
-      capacity: body.capacity || null,
-      status: "draft",
-      created_at: now,
-      updated_at: now,
-    });
+    try {
+      await DB("events").insert({
+        id: eventId,
+        organizer_id: user.id,
+        name: body.name,
+        description: body.description || null,
+        location: body.location || null,
+        start_at,
+        end_at,
+        capacity: body.capacity || null,
+        status: "draft",
+        created_at: now,
+        updated_at: now,
+      });
+    } catch (error: any) {
+      console.error("[EventController.store] insert error", error);
+
+      // If this is a duplicate primary key/unique constraint error, treat it as
+      // an idempotent success (the event already exists) and just redirect.
+      const code = error?.code as string | undefined;
+      if (code === "SQLITE_CONSTRAINT" || code === "23505") {
+        return response.redirect("/events");
+      }
+
+      throw error;
+    }
 
     return response.redirect("/events");
   }

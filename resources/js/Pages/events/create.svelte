@@ -1,6 +1,5 @@
 <script>
   import Header from '../../Components/Header.svelte';
-  import { router } from '@inertiajs/svelte';
 
   let name = '';
   let description = '';
@@ -10,8 +9,9 @@
   let capacity = '';
   let error = '';
   let processing = false;
+  let eventId = null;
 
-  function submit(e) {
+  async function submit(e) {
     e.preventDefault();
     if (processing) return;
     error = '';
@@ -24,24 +24,49 @@
       return;
     }
 
+    if (!eventId && typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      eventId = crypto.randomUUID();
+    }
+
     processing = true;
 
-    router.post(
-      '/events',
-      {
-        name,
-        description,
-        location,
-        start_at: startTs,
-        end_at: endTs,
-        capacity: capacity ? Number(capacity) : null
-      },
-      {
-        onFinish: () => {
-          processing = false;
-        }
+    try {
+      const res = await fetch('/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: eventId,
+          name,
+          description,
+          location,
+          start_at: startTs,
+          end_at: endTs,
+          capacity: capacity ? Number(capacity) : null
+        })
+      });
+
+      if (res.status === 422) {
+        const data = await res.json().catch(() => null);
+        error = data?.error || 'Tanggal mulai/selesai tidak valid.';
+        return;
       }
-    );
+
+      if (!res.ok) {
+        console.error('Failed to create event', await res.text());
+        error = 'Gagal menyimpan event.';
+        return;
+      }
+
+      // Berhasil: arahkan ke daftar event
+      window.location.href = '/events';
+    } catch (err) {
+      console.error('Create event error', err);
+      error = 'Terjadi kesalahan saat menyimpan event.';
+    } finally {
+      processing = false;
+    }
   }
 </script>
 
