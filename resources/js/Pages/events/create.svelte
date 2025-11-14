@@ -1,5 +1,6 @@
 <script>
   import Header from '../../Components/Header.svelte';
+  import { router, Link } from '@inertiajs/svelte';
 
   let name = '';
   let description = '';
@@ -11,7 +12,7 @@
   let processing = false;
   let eventId = null;
 
-  async function submit(e) {
+  function submit(e) {
     e.preventDefault();
     if (processing) return;
     error = '';
@@ -30,43 +31,23 @@
 
     processing = true;
 
-    try {
-      const res = await fetch('/events', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id: eventId,
-          name,
-          description,
-          location,
-          start_at: startTs,
-          end_at: endTs,
-          capacity: capacity ? Number(capacity) : null
-        })
-      });
-
-      if (res.status === 422) {
-        const data = await res.json().catch(() => null);
-        error = data?.error || 'Tanggal mulai/selesai tidak valid.';
-        return;
+    router.post(
+      '/events',
+      {
+        id: eventId,
+        name,
+        description,
+        location,
+        start_at: startTs,
+        end_at: endTs,
+        capacity: capacity ? Number(capacity) : null
+      },
+      {
+        onFinish: () => {
+          processing = false;
+        }
       }
-
-      if (!res.ok) {
-        console.error('Failed to create event', await res.text());
-        error = 'Gagal menyimpan event.';
-        return;
-      }
-
-      // Berhasil: arahkan ke daftar event
-      window.location.href = '/events';
-    } catch (err) {
-      console.error('Create event error', err);
-      error = 'Terjadi kesalahan saat menyimpan event.';
-    } finally {
-      processing = false;
-    }
+    );
   }
 </script>
 
@@ -141,7 +122,7 @@
       </div>
 
       <div class="flex items-center justify-between pt-2">
-        <a href="/events" class="text-sm text-gray-600 dark:text-gray-300 hover:underline">Kembali ke daftar</a>
+        <Link href="/events" class="text-sm text-gray-600 dark:text-gray-300 hover:underline">Kembali ke daftar</Link>
         <button
           type="submit"
           disabled={processing}

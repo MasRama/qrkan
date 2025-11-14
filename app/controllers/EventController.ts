@@ -66,9 +66,16 @@ class EventController {
       end_at,
     });
 
-    // Idempotency guard: if an event with the same organizer, name, and time range
-    // already exists, don't create a duplicate. This protects against accidental
-    // double submissions.
+    // Strong idempotency guard 1: if an event with the same id already exists,
+    // skip inserting entirely (avoids hitting UNIQUE constraint at all).
+    const existingById = await DB("events").where("id", eventId).first();
+    if (existingById) {
+      return response.redirect("/events");
+    }
+
+    // Idempotency guard 2: if an event with the same organizer, name, and time
+    // range already exists, don't create a duplicate. This protects against
+    // accidental double submissions even when id is not provided.
     const existing = await DB("events")
       .where("organizer_id", user.id)
       .where("name", body.name)
@@ -83,29 +90,34 @@ class EventController {
     const now = Date.now();
 
     try {
-      await DB("events").insert({
-        id: eventId,
-        organizer_id: user.id,
-        name: body.name,
-        description: body.description || null,
-        location: body.location || null,
-        start_at,
-        end_at,
-        capacity: body.capacity || null,
-        status: "draft",
-        created_at: now,
-        updated_at: now,
-      });
+      await DB("events")
+        .insert({
+          id: eventId,
+          organizer_id: user.id,
+          name: body.name,
+          description: body.description || null,
+          location: body.location || null,
+          start_at,
+          end_at,
+          capacity: body.capacity || null,
+          status: "draft",
+          created_at: now,
+          updated_at: now,
+        })
+        .onConflict("id")
+        .ignore();
     } catch (error: any) {
-      console.error("[EventController.store] insert error", error);
-
       // If this is a duplicate primary key/unique constraint error, treat it as
       // an idempotent success (the event already exists) and just redirect.
       const code = error?.code as string | undefined;
-      if (code === "SQLITE_CONSTRAINT" || code === "23505") {
+      if ((code && code.startsWith("SQLITE_CONSTRAINT")) || code === "23505") {
+        console.log("[EventController.store] duplicate insert ignored", { eventId, code });
         return response.redirect("/events");
       }
 
+      // Unexpected error: log with full details and rethrow so the global error
+      // handler can surface it.
+      console.error("[EventController.store] insert error", error);
       throw error;
     }
 

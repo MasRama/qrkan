@@ -1,6 +1,6 @@
 <script>
   import Header from '../../Components/Header.svelte';
-  import { router } from '@inertiajs/svelte';
+  import { router, Link } from '@inertiajs/svelte';
 
   export let events = [];
   export let status = 'all';
@@ -117,12 +117,12 @@
         <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Kelola event, jadwal, kapasitas dan status publikasinya.</p>
       </div>
 
-      <a
+      <Link
         href="/events/create"
         class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 shadow-sm hover:shadow-md transition-all"
         >
         + Buat Event
-      </a>
+      </Link>
     </div>
 
     <!-- Summary cards -->
