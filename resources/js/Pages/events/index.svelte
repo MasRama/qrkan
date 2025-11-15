@@ -201,6 +201,24 @@
                 </td>
                 <td class="px-4 py-3 text-right space-x-2">
                   <a
+                    href={`/events/${event.id}/participants`}
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 hover:bg-gray-50/80 dark:hover:bg-gray-800/40"
+                  >
+                    Peserta
+                  </a>
+                  <a
+                    href={`/events/${event.id}/scan`}
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800 hover:bg-emerald-50/80 dark:hover:bg-emerald-900/30"
+                  >
+                    Scan
+                  </a>
+                  <a
+                    href={`/events/${event.id}/report`}
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-sky-700 dark:text-sky-300 border border-sky-100 dark:border-sky-800 hover:bg-sky-50/80 dark:hover:bg-sky-900/30"
+                  >
+                    Laporan
+                  </a>
+                  <a
                     href={`/events/${event.id}/edit`}
                     class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-primary-700 dark:text-primary-300 border border-primary-100 dark:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/30"
                   >

@@ -101,6 +101,7 @@ Route.get("/events/:id/report", [Auth, Role(["super_admin", "organizer"])] , Eve
 Route.get("/events/:eventId/participants", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.index);
 Route.get("/events/:eventId/participants/create", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.create);
 Route.post("/events/:eventId/participants", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.store);
+Route.delete("/events/:eventId/participants/:participantId", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.destroy);
 
 Route.get("/events/:eventId/scan", [Auth, Role(["gate_operator", "super_admin"])] , ScanController.page);
 

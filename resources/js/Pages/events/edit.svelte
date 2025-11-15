@@ -156,5 +156,28 @@
         </button>
       </div>
     </div>
+    <div class="mt-6 border-t border-dashed border-gray-200 dark:border-gray-800 pt-4">
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Langkah berikutnya untuk event ini:</p>
+      <div class="flex flex-wrap gap-2">
+        <a
+          href={`/events/${event.id}/participants`}
+          class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 hover:bg-gray-50/80 dark:hover:bg-gray-800/40"
+        >
+          Kelola peserta
+        </a>
+        <a
+          href={`/events/${event.id}/scan`}
+          class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800 hover:bg-emerald-50/80 dark:hover:bg-emerald-900/30"
+        >
+          Halaman scan gate
+        </a>
+        <a
+          href={`/events/${event.id}/report`}
+          class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-sky-700 dark:text-sky-300 border border-sky-100 dark:border-sky-800 hover:bg-sky-50/80 dark:hover:bg-sky-900/30"
+        >
+          Laporan kehadiran
+        </a>
+      </div>
+    </div>
   </div>
 </div>

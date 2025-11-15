@@ -118,7 +118,9 @@ class TicketController {
     await DB("checkin_logs").insert({
       id: randomUUID(),
       ticket_id: ticket.id,
-      gate_name: gate_name || null,
+      // gate_name column is NOT NULL in the schema, so fall back to a
+      // sensible default when the client does not provide one.
+      gate_name: gate_name || "default",
       gate_id: gate_id || null,
       operator_id: request.user.id,
       checkin_at: now,
