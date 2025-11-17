@@ -10,6 +10,7 @@ import HomeController from "../app/controllers/HomeController";
 import AssetController from "../app/controllers/AssetController";
 import S3Controller from "../app/controllers/S3Controller";
 import HyperExpress from 'hyper-express';
+import SeatController from "../app/controllers/SeatController";
 
 const Route = new HyperExpress.Router();
 
@@ -102,6 +103,13 @@ Route.get("/events/:eventId/participants", [Auth, Role(["super_admin", "organize
 Route.get("/events/:eventId/participants/create", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.create);
 Route.post("/events/:eventId/participants", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.store);
 Route.delete("/events/:eventId/participants/:participantId", [Auth, Role(["super_admin", "organizer"])] , ParticipantController.destroy);
+
+Route.get("/events/:eventId/seats", [Auth, Role(["super_admin", "organizer"])] , SeatController.index);
+Route.get("/events/:eventId/seats/create", [Auth, Role(["super_admin", "organizer"])] , SeatController.create);
+Route.post("/events/:eventId/seats", [Auth, Role(["super_admin", "organizer"])] , SeatController.store);
+Route.get("/events/:eventId/seats/:seatId/edit", [Auth, Role(["super_admin", "organizer"])] , SeatController.edit);
+Route.post("/events/:eventId/seats/:seatId", [Auth, Role(["super_admin", "organizer"])] , SeatController.update);
+Route.delete("/events/:eventId/seats/:seatId", [Auth, Role(["super_admin", "organizer"])] , SeatController.destroy);
 
 Route.get("/events/:eventId/scan", [Auth, Role(["gate_operator", "super_admin"])] , ScanController.page);
 

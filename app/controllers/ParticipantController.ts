@@ -39,13 +39,17 @@ class ParticipantController {
       .orderBy("created_at", "asc");
 
     const tickets = await DB("tickets").where("event_id", eventId);
+    const seats = await DB("seats").where("event_id", eventId);
 
     const participantsWithTicket = participants.map((p) => {
       const ticket = tickets.find((t) => t.participant_id === p.id);
+      const seat = (p as any).seat_id ? seats.find((s) => s.id === (p as any).seat_id) : null;
       return {
         ...p,
         ticket_status: ticket?.status || null,
         ticket_token: ticket?.token || null,
+        seat_name: seat?.name || null,
+        seat_price: seat?.price ?? null,
       };
     });
 
@@ -61,7 +65,11 @@ class ParticipantController {
     const event = await ensureEventAccess(eventId, request, response);
     if (!event) return;
 
-    return response.inertia("participants/create", { event });
+    const seats = await DB("seats")
+      .where("event_id", eventId)
+      .orderBy("price", "asc");
+
+    return response.inertia("participants/create", { event, seats });
   }
 
   public async store(request: Request, response: Response) {
@@ -74,20 +82,33 @@ class ParticipantController {
     const rawName = body.name as string | undefined;
     const rawEmail = body.email as string | undefined;
     const rawPhone = body.phone as string | undefined;
+    const rawSeatId = body.seat_id as string | undefined;
 
     const name = rawName ? rawName.trim() : "";
     const email = rawEmail ? rawEmail.trim().toLowerCase() : "";
     const phone = rawPhone ? rawPhone.trim() : "";
+    const seatId = rawSeatId ? rawSeatId.trim() : "";
 
     console.log("[ParticipantController.store] incoming", {
       eventId,
       name,
       email,
       phone,
+      seatId,
     });
 
-    if (!name || (!email && !phone)) {
-      return response.status(422).json({ error: "Name and at least one contact (email/phone) are required" });
+    if (!name || (!email && !phone) || !seatId) {
+      return response
+        .status(422)
+        .json({ error: "Name, seat, and at least one contact (email/phone) are required" });
+    }
+
+    const seat = await DB("seats")
+      .where({ id: seatId, event_id: eventId })
+      .first();
+
+    if (!seat) {
+      return response.status(422).json({ error: "Invalid seat" });
     }
 
     const now = Date.now();
@@ -108,6 +129,7 @@ class ParticipantController {
           name,
           email: email || null,
           phone,
+          seat_id: seatId,
           created_at: now,
           updated_at: now,
         })
@@ -135,6 +157,7 @@ class ParticipantController {
         name,
         email: email || null,
         phone: null,
+        seat_id: seatId,
         created_at: now,
         updated_at: now,
       });

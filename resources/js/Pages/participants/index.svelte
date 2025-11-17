@@ -93,6 +93,7 @@
           <tr>
             <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Nama</th>
             <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Kontak</th>
+            <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Seat</th>
             <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Status tiket</th>
             <th class="px-4 py-3 text-right font-semibold text-gray-600 dark:text-gray-300">Aksi</th>
           </tr>
@@ -100,7 +101,7 @@
         <tbody>
           {#if participants.length === 0}
             <tr>
-              <td colspan="4" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+              <td colspan="5" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                 Belum ada peserta terdaftar.
               </td>
             </tr>
@@ -113,6 +114,18 @@
                 <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-200">
                   <div>{p.email || '-'}</div>
                   <div class="text-gray-500 dark:text-gray-400">{p.phone || ''}</div>
+                </td>
+                <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-200">
+                  {#if p.seat_name}
+                    <div>{p.seat_name}</div>
+                    {#if p.seat_price != null}
+                      <div class="text-gray-500 dark:text-gray-400">
+                        Rp {Number(p.seat_price).toLocaleString('id-ID')}
+                      </div>
+                    {/if}
+                  {:else}
+                    <span class="text-xs text-gray-400">-</span>
+                  {/if}
                 </td>
                 <td class="px-4 py-3">
                   {#if p.ticket_status}

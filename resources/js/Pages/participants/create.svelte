@@ -3,18 +3,20 @@
   import { router } from '@inertiajs/svelte';
 
   export let event;
+  export let seats = [];
 
   let name = '';
   let email = '';
   let phone = '';
+   let seat_id = '';
   let error = '';
 
   function submit(e) {
     e.preventDefault();
     error = '';
 
-    if (!name || (!email && !phone)) {
-      error = 'Nama dan minimal salah satu kontak (email/phone) wajib diisi.';
+    if (!name || (!email && !phone) || !seat_id) {
+      error = 'Nama, seat, dan minimal salah satu kontak (email/phone) wajib diisi.';
       return;
     }
 
@@ -22,6 +24,7 @@
       name,
       email,
       phone,
+      seat_id,
     });
   }
 </script>
@@ -68,6 +71,25 @@
           class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
           placeholder="08xxxxxxxxxx"
         />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1" for="seat">Seat</label>
+        <select
+          id="seat"
+          bind:value={seat_id}
+          class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+        >
+          <option value="">Pilih seat</option>
+          {#each seats as seat}
+            <option value={seat.id}>
+              {seat.name}
+              {#if seat.price != null}
+                {' - Rp '}{Number(seat.price).toLocaleString('id-ID')}
+              {/if}
+            </option>
+          {/each}
+        </select>
       </div>
 
       <p class="text-xs text-gray-500 dark:text-gray-400">

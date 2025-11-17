@@ -164,63 +164,65 @@
       </p>
     </div>
 
-    <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/70 shadow-sm">
-      <table class="min-w-full text-sm">
-        <thead class="bg-gray-50 dark:bg-gray-800/80">
-          <tr>
-            <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Nama</th>
-            <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Waktu</th>
-            <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Lokasi</th>
-            <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Status</th>
-            <th class="px-4 py-3 text-right font-semibold text-gray-600 dark:text-gray-300">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          {#if events.length === 0}
-            <tr>
-              <td colspan="5" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
-                Belum ada event. Mulai dengan membuat event baru.
-              </td>
-            </tr>
-          {:else}
+    <div class="space-y-4">
+      <!-- Mobile: card list -->
+      <div class="sm:hidden">
+        {#if events.length === 0}
+          <div class="rounded-2xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-800 px-4 py-4 text-sm text-gray-600 dark:text-gray-300">
+            Belum ada event. Mulai dengan membuat event baru.
+          </div>
+        {:else}
+          <div class="space-y-3">
             {#each events as event}
-              <tr class="border-t border-gray-100 dark:border-gray-800 hover:bg-gray-50/60 dark:hover:bg-gray-800/60">
-                <td class="px-4 py-3">
-                  <div class="font-medium text-gray-900 dark:text-gray-50">{event.name}</div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-xs">{event.description}</div>
-                </td>
-                <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-200">
-                  <div>{formatDate(event.start_at)}</div>
-                  <div class="text-gray-500 dark:text-gray-400">→ {formatDate(event.end_at)}</div>
-                </td>
-                <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-200">{event.location || '-'}</td>
-                <td class="px-4 py-3">
-                  <span class={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${statusColor(event.status)}`}>
+              <article class="rounded-2xl bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-800 px-4 py-3.5 shadow-sm">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="min-w-0">
+                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white truncate">{event.name}</h2>
+                    <p class="mt-0.5 text-[11px] text-gray-500 dark:text-gray-400 line-clamp-2">
+                      {event.description || 'Belum ada deskripsi event.'}
+                    </p>
+                    <p class="mt-2 text-[11px] text-gray-500 dark:text-gray-400">
+                      {formatDate(event.start_at)}
+                      <span class="mx-1 text-gray-400">→</span>
+                      {formatDate(event.end_at)}
+                    </p>
+                    <p class="mt-0.5 text-[11px] text-gray-500 dark:text-gray-400">
+                      {event.location || 'Lokasi belum diisi'}
+                    </p>
+                  </div>
+                  <span class={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold ${statusColor(event.status)}`}>
                     {event.status}
                   </span>
-                </td>
-                <td class="px-4 py-3 text-right space-x-2">
+                </div>
+
+                <div class="mt-3 flex flex-wrap gap-2">
                   <a
                     href={`/events/${event.id}/participants`}
-                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 hover:bg-gray-50/80 dark:hover:bg-gray-800/40"
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-950/60"
                   >
                     Peserta
                   </a>
                   <a
+                    href={`/events/${event.id}/seats`}
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-semibold text-amber-700 dark:text-amber-300 border border-amber-100 dark:border-amber-800 bg-amber-50/70 dark:bg-amber-900/30"
+                  >
+                    Seat
+                  </a>
+                  <a
                     href={`/events/${event.id}/scan`}
-                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800 hover:bg-emerald-50/80 dark:hover:bg-emerald-900/30"
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800 bg-emerald-50/70 dark:bg-emerald-900/30"
                   >
                     Scan
                   </a>
                   <a
                     href={`/events/${event.id}/report`}
-                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-sky-700 dark:text-sky-300 border border-sky-100 dark:border-sky-800 hover:bg-sky-50/80 dark:hover:bg-sky-900/30"
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-semibold text-sky-700 dark:text-sky-300 border border-sky-100 dark:border-sky-800 bg-sky-50/70 dark:bg-sky-900/30"
                   >
                     Laporan
                   </a>
                   <a
                     href={`/events/${event.id}/edit`}
-                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-primary-700 dark:text-primary-300 border border-primary-100 dark:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/30"
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-semibold text-primary-700 dark:text-primary-300 border border-primary-100 dark:border-primary-900 bg-primary-50/80 dark:bg-primary-900/40"
                   >
                     Edit
                   </a>
@@ -228,7 +230,7 @@
                     type="button"
                     on:click={() => deleteEvent(event)}
                     disabled={deletingId === event.id}
-                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-red-700 dark:text-red-300 border border-red-100 dark:border-red-900 hover:bg-red-50/80 dark:hover:bg-red-900/30 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-semibold text-red-700 dark:text-red-300 border border-red-100 dark:border-red-900 bg-red-50/80 dark:bg-red-900/30 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {#if deletingId === event.id}
                       Menghapus...
@@ -236,12 +238,100 @@
                       Delete
                     {/if}
                   </button>
+                </div>
+              </article>
+            {/each}
+          </div>
+        {/if}
+      </div>
+
+      <!-- Desktop: table -->
+      <div class="hidden sm:block overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/70 shadow-sm">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gray-50 dark:bg-gray-800/80">
+            <tr>
+              <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Nama</th>
+              <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Waktu</th>
+              <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Lokasi</th>
+              <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Status</th>
+              <th class="px-4 py-3 text-right font-semibold text-gray-600 dark:text-gray-300">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {#if events.length === 0}
+              <tr>
+                <td colspan="5" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                  Belum ada event. Mulai dengan membuat event baru.
                 </td>
               </tr>
-            {/each}
-          {/if}
-        </tbody>
-      </table>
+            {:else}
+              {#each events as event}
+                <tr class="border-t border-gray-100 dark:border-gray-800 hover:bg-gray-50/60 dark:hover:bg-gray-800/60">
+                  <td class="px-4 py-3">
+                    <div class="font-medium text-gray-900 dark:text-gray-50">{event.name}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-xs">{event.description}</div>
+                  </td>
+                  <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-200">
+                    <div>{formatDate(event.start_at)}</div>
+                    <div class="text-gray-500 dark:text-gray-400">→ {formatDate(event.end_at)}</div>
+                  </td>
+                  <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-200">{event.location || '-'}</td>
+                  <td class="px-4 py-3">
+                    <span class={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${statusColor(event.status)}`}>
+                      {event.status}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-right space-x-2">
+                    <a
+                      href={`/events/${event.id}/participants`}
+                      class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 hover:bg-gray-50/80 dark:hover:bg-gray-800/40"
+                    >
+                      Peserta
+                    </a>
+                    <a
+                      href={`/events/${event.id}/seats`}
+                      class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-amber-700 dark:text-amber-300 border border-amber-100 dark:border-amber-800 hover:bg-amber-50/80 dark:hover:bg-amber-900/30"
+                    >
+                      Seat
+                    </a>
+                    <a
+                      href={`/events/${event.id}/scan`}
+                      class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800 hover:bg-emerald-50/80 dark:hover:bg-emerald-900/30"
+                    >
+                      Scan
+                    </a>
+                    <a
+                      href={`/events/${event.id}/report`}
+                      class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-sky-700 dark:text-sky-300 border border-sky-100 dark:border-sky-800 hover:bg-sky-50/80 dark:hover:bg-sky-900/30"
+                    >
+                      Laporan
+                    </a>
+                    <a
+                      href={`/events/${event.id}/edit`}
+                      class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-primary-700 dark:text-primary-300 border border-primary-100 dark:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/30"
+                    >
+                      Edit
+                    </a>
+                    <button
+                      type="button"
+                      on:click={() => deleteEvent(event)}
+                      disabled={deletingId === event.id}
+                      class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-red-700 dark:text-red-300 border border-red-100 dark:border-red-900 hover:bg-red-50/80 dark:hover:bg-red-900/30 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                    >
+                      {#if deletingId === event.id}
+                        Menghapus...
+                      {:else}
+                        Delete
+                      {/if}
+                    </button>
+                  </td>
+                </tr>
+              {/each}
+            {/if}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
+
