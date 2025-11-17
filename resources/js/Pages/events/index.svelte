@@ -90,6 +90,41 @@
       deletingId = null;
     }
   }
+
+  async function copyCheckoutLink(ev) {
+    if (!ev || !ev.id) return;
+
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    const url = `${origin}/events/${ev.id}/checkout`;
+
+    try {
+      if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = url;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+
+      toastMessage = 'Link checkout event sudah disalin.';
+      showToast = true;
+    } catch (err) {
+      console.error('Copy checkout link error', err);
+      toastMessage = 'Gagal menyalin link checkout.';
+      showToast = true;
+    }
+
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      showToast = false;
+    }, 2200);
+  }
 </script>
 
 <Header group="events" />
@@ -208,6 +243,13 @@
                   >
                     Seat
                   </a>
+                  <button
+                    type="button"
+                    on:click={() => copyCheckoutLink(event)}
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-semibold text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800 bg-indigo-50/80 dark:bg-indigo-900/30"
+                  >
+                    Checkout link
+                  </button>
                   <a
                     href={`/events/${event.id}/scan`}
                     class="inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800 bg-emerald-50/70 dark:bg-emerald-900/30"
@@ -294,6 +336,13 @@
                     >
                       Seat
                     </a>
+                    <button
+                      type="button"
+                      on:click={() => copyCheckoutLink(event)}
+                      class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800 hover:bg-indigo-50/80 dark:hover:bg-indigo-900/30"
+                    >
+                      Checkout link
+                    </button>
                     <a
                       href={`/events/${event.id}/scan`}
                       class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800 hover:bg-emerald-50/80 dark:hover:bg-emerald-900/30"

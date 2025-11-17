@@ -11,6 +11,7 @@ import AssetController from "../app/controllers/AssetController";
 import S3Controller from "../app/controllers/S3Controller";
 import HyperExpress from 'hyper-express';
 import SeatController from "../app/controllers/SeatController";
+import CheckoutController from "../app/controllers/CheckoutController";
 
 const Route = new HyperExpress.Router();
 
@@ -21,6 +22,11 @@ const Route = new HyperExpress.Router();
  * GET  / - Home page
  */
 Route.get("/", HomeController.index);
+
+// Public checkout (dummy payment) routes
+Route.get("/events/:id/checkout", CheckoutController.form);
+Route.post("/events/:id/checkout", CheckoutController.submit);
+Route.get("/checkout/:token/success", CheckoutController.success);
 
 /**
  * S3 Routes
