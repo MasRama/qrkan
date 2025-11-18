@@ -8,6 +8,8 @@
   let name = '';
   let email = '';
   let phone = '';
+  let gender = '';
+  let age = '';
   let seat_id = '';
   let error = '';
   let processing = false;
@@ -37,6 +39,8 @@
         name,
         email,
         phone,
+        gender,
+        age,
         seat_id
       },
       {
@@ -111,6 +115,31 @@
               bind:value={phone}
               class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               placeholder="08xxxxxxxxxx"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="block text-xs font-medium text-gray-700 dark:text-gray-200" for="gender">Jenis Kelamin</label>
+            <select
+              id="gender"
+              bind:value={gender}
+              class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              <option value="">Pilih...</option>
+              <option value="L">Laki-laki</option>
+              <option value="P">Perempuan</option>
+            </select>
+          </div>
+          <div class="space-y-1">
+            <label class="block text-xs font-medium text-gray-700 dark:text-gray-200" for="age">Umur</label>
+            <input
+              id="age"
+              type="number"
+              bind:value={age}
+              class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+              placeholder="Contoh: 25"
             />
           </div>
         </div>

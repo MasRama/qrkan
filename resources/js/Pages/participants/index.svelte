@@ -93,6 +93,7 @@
           <tr>
             <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Nama</th>
             <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Kontak</th>
+            <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Gender/Umur</th>
             <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Seat</th>
             <th class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Status tiket</th>
             <th class="px-4 py-3 text-right font-semibold text-gray-600 dark:text-gray-300">Aksi</th>
@@ -114,6 +115,10 @@
                 <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-200">
                   <div>{p.email || '-'}</div>
                   <div class="text-gray-500 dark:text-gray-400">{p.phone || ''}</div>
+                </td>
+                <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-200">
+                  <div>{p.gender === 'L' ? 'Laki-laki' : p.gender === 'P' ? 'Perempuan' : '-'}</div>
+                  <div class="text-gray-500 dark:text-gray-400">{p.age ? `${p.age} th` : '-'}</div>
                 </td>
                 <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-200">
                   {#if p.seat_name}

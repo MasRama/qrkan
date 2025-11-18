@@ -139,8 +139,8 @@ class ParticipantController {
       // Email-only dedup (no phone) – check before inserting
       const existingByEmail = email
         ? await DB("participants")
-            .where({ event_id: eventId, email })
-            .first()
+          .where({ event_id: eventId, email })
+          .first()
         : null;
 
       if (existingByEmail) {

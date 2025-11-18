@@ -38,10 +38,15 @@ class CheckoutController {
     const rawPhone = body.phone as string | undefined;
     const rawSeatId = body.seat_id as string | undefined;
 
+    const rawGender = body.gender as string | undefined;
+    const rawAge = body.age as number | string | undefined;
+
     const name = rawName ? rawName.trim() : "";
     const email = rawEmail ? rawEmail.trim().toLowerCase() : "";
     const phone = rawPhone ? rawPhone.trim() : "";
     const seatId = rawSeatId ? rawSeatId.trim() : "";
+    const gender = rawGender ? rawGender.trim() : null;
+    const age = rawAge ? Number(rawAge) : null;
 
     if (!name || (!email && !phone) || !seatId) {
       return response
@@ -68,6 +73,8 @@ class CheckoutController {
           name,
           email: email || null,
           phone,
+          gender,
+          age,
           seat_id: seatId,
           created_at: now,
           updated_at: now,
@@ -77,8 +84,8 @@ class CheckoutController {
     } else {
       const existingByEmail = email
         ? await DB("participants")
-            .where({ event_id: eventId, email })
-            .first()
+          .where({ event_id: eventId, email })
+          .first()
         : null;
 
       if (existingByEmail) {
@@ -91,6 +98,8 @@ class CheckoutController {
         name,
         email: email || null,
         phone: null,
+        gender,
+        age,
         seat_id: seatId,
         created_at: now,
         updated_at: now,

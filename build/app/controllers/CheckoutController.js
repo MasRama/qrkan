@@ -32,10 +32,14 @@ class CheckoutController {
         const rawEmail = body.email;
         const rawPhone = body.phone;
         const rawSeatId = body.seat_id;
+        const rawGender = body.gender;
+        const rawAge = body.age;
         const name = rawName ? rawName.trim() : "";
         const email = rawEmail ? rawEmail.trim().toLowerCase() : "";
         const phone = rawPhone ? rawPhone.trim() : "";
         const seatId = rawSeatId ? rawSeatId.trim() : "";
+        const gender = rawGender ? rawGender.trim() : null;
+        const age = rawAge ? Number(rawAge) : null;
         if (!name || (!email && !phone) || !seatId) {
             return response
                 .status(422)
@@ -57,6 +61,8 @@ class CheckoutController {
                 name,
                 email: email || null,
                 phone,
+                gender,
+                age,
                 seat_id: seatId,
                 created_at: now,
                 updated_at: now,
@@ -79,6 +85,8 @@ class CheckoutController {
                 name,
                 email: email || null,
                 phone: null,
+                gender,
+                age,
                 seat_id: seatId,
                 created_at: now,
                 updated_at: now,
