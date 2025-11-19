@@ -5,6 +5,7 @@
   export let participant;
   export let ticket;
   export let seat;
+  export let is_paid = false;
   export let qr_image_url;
   export let qr_download_url;
 
@@ -33,10 +34,27 @@
 <div class="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100 dark:from-gray-950 dark:via-gray-950 dark:to-gray-900 pt-24 pb-10 sm:pt-28 sm:pb-12">
   <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
     <section class="text-center space-y-3">
-      <p class="text-xs uppercase tracking-[0.18em] text-primary-600/80 dark:text-primary-300/80">Checkout berhasil</p>
-      <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white">Tiket kamu siap dipakai</h1>
+      <p class="text-xs uppercase tracking-[0.18em] text-primary-600/80 dark:text-primary-300/80">
+        {#if is_paid}
+          Checkout berhasil
+        {:else}
+          Menunggu pembayaran Tripay
+        {/if}
+      </p>
+      <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white">
+        {#if is_paid}
+          Tiket kamu siap dipakai
+        {:else}
+          Selesaikan pembayaranmu terlebih dahulu
+        {/if}
+      </h1>
       <p class="text-sm text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
-        Simpan QR di bawah ini. QR ini akan dipindai saat check-in di gate event.
+        {#if is_paid}
+          Simpan QR di bawah ini. QR ini akan dipindai saat check-in di gate event.
+        {:else}
+          Pembayaran kamu belum kami terima. Selesaikan pembayaran di halaman Tripay, lalu refresh halaman ini untuk
+          melihat QR tiket.
+        {/if}
       </p>
     </section>
 
@@ -57,12 +75,19 @@
         {/if}
 
         <div class="w-full flex flex-col sm:flex-row items-center justify-center gap-3 mt-2">
-          <a
-            href={qr_download_url}
-            class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 shadow-sm hover:shadow-md transition-all w-full sm:w-auto"
-          >
-            Download QR
-          </a>
+          {#if qr_download_url}
+            <a
+              href={qr_download_url}
+              class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 shadow-sm hover:shadow-md transition-all w-full sm:w-auto"
+            >
+              Download QR
+            </a>
+          {:else}
+            <span class="text-[11px] sm:text-xs text-gray-600 dark:text-gray-300">
+              QR akan tersedia setelah pembayaran Tripay kamu berstatus berhasil. Refresh halaman ini setelah
+              menyelesaikan pembayaran.
+            </span>
+          {/if}
           <a
             href={`/events/${event?.id}/checkout`}
             class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all w-full sm:w-auto"

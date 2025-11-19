@@ -157,6 +157,12 @@ class CheckoutController {
             console.error("[Tripay] Failed to create transaction", err);
         }
         if (checkoutUrl) {
+            const isInertiaRequest = !!request.header("X-Inertia");
+            if (isInertiaRequest) {
+                response.status(409);
+                response.setHeader("X-Inertia-Location", checkoutUrl);
+                return response.send("");
+            }
             return response.redirect(checkoutUrl);
         }
         return response.redirect(`/checkout/${ticket.token}/success`);
@@ -173,18 +179,24 @@ class CheckoutController {
         if (participant && participant.seat_id) {
             seat = await (0, DB_1.default)("seats").where("id", participant.seat_id).first();
         }
-        const fileName = `${token}.png`;
-        const filePath = path_1.default.join(process.cwd(), "public", "tickets", fileName);
-        if (!fs_1.default.existsSync(filePath)) {
-            await QRCode_1.default.generateForToken(token);
+        const isPaid = ticket.status === "sent" || ticket.status === "checked_in";
+        let qr_image_url = null;
+        let qr_download_url = null;
+        if (isPaid) {
+            const fileName = `${token}.png`;
+            const filePath = path_1.default.join(process.cwd(), "public", "tickets", fileName);
+            if (!fs_1.default.existsSync(filePath)) {
+                await QRCode_1.default.generateForToken(token);
+            }
+            qr_image_url = `/public/tickets/${fileName}`;
+            qr_download_url = `/tickets/${token}`;
         }
-        const qr_image_url = `/public/tickets/${fileName}`;
-        const qr_download_url = `/tickets/${token}`;
         return response.inertia("events/checkout_success", {
             event,
             participant,
             ticket,
             seat,
+            is_paid: isPaid,
             qr_image_url,
             qr_download_url,
         });

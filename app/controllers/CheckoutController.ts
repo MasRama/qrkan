@@ -185,6 +185,17 @@ class CheckoutController {
     }
 
     if (checkoutUrl) {
+      // When using Inertia (router.post), external redirects must be done via
+      // a 409 response + X-Inertia-Location header so the client performs
+      // a full window.location change. See Inertia.js external redirect docs.
+      const isInertiaRequest = !!request.header("X-Inertia");
+
+      if (isInertiaRequest) {
+        response.status(409);
+        response.setHeader("X-Inertia-Location", checkoutUrl);
+        return response.send("");
+      }
+
       return response.redirect(checkoutUrl);
     }
 
@@ -208,21 +219,29 @@ class CheckoutController {
       seat = await DB("seats").where("id", (participant as any).seat_id).first();
     }
 
-    const fileName = `${token}.png`;
-    const filePath = path.join(process.cwd(), "public", "tickets", fileName);
+    const isPaid = ticket.status === "sent" || ticket.status === "checked_in";
 
-    if (!fs.existsSync(filePath)) {
-      await QRCodeService.generateForToken(token);
+    let qr_image_url: string | null = null;
+    let qr_download_url: string | null = null;
+
+    if (isPaid) {
+      const fileName = `${token}.png`;
+      const filePath = path.join(process.cwd(), "public", "tickets", fileName);
+
+      if (!fs.existsSync(filePath)) {
+        await QRCodeService.generateForToken(token);
+      }
+
+      qr_image_url = `/public/tickets/${fileName}`;
+      qr_download_url = `/tickets/${token}`;
     }
-
-    const qr_image_url = `/public/tickets/${fileName}`;
-    const qr_download_url = `/tickets/${token}`;
 
     return response.inertia("events/checkout_success", {
       event,
       participant,
       ticket,
       seat,
+      is_paid: isPaid,
       qr_image_url,
       qr_download_url,
     });

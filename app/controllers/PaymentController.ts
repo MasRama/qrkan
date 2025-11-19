@@ -21,15 +21,17 @@ class PaymentController {
       const reference = body?.reference;
 
       if (merchantRef) {
-        // For now we only log mapping between merchant_ref and ticket for debugging.
-        // In the future, you can extend this to update a dedicated payment status column.
         const ticket = await DB("tickets").where("id", merchantRef).first();
         if (ticket) {
-          await DB("tickets")
-            .where("id", merchantRef)
-            .update({
-              updated_at: Date.now(),
-            });
+          const now = Date.now();
+          const normalizedStatus = typeof status === "string" ? status.toUpperCase() : "";
+          const update: any = { updated_at: now };
+
+          if (normalizedStatus === "PAID" || normalizedStatus === "SUCCESS") {
+            update.status = "sent";
+          }
+
+          await DB("tickets").where("id", merchantRef).update(update);
         }
       }
 

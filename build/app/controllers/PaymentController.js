@@ -20,11 +20,13 @@ class PaymentController {
             if (merchantRef) {
                 const ticket = await (0, DB_1.default)("tickets").where("id", merchantRef).first();
                 if (ticket) {
-                    await (0, DB_1.default)("tickets")
-                        .where("id", merchantRef)
-                        .update({
-                        updated_at: Date.now(),
-                    });
+                    const now = Date.now();
+                    const normalizedStatus = typeof status === "string" ? status.toUpperCase() : "";
+                    const update = { updated_at: now };
+                    if (normalizedStatus === "PAID" || normalizedStatus === "SUCCESS") {
+                        update.status = "sent";
+                    }
+                    await (0, DB_1.default)("tickets").where("id", merchantRef).update(update);
                 }
             }
             console.log("[Tripay] Callback received", {
