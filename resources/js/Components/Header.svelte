@@ -56,9 +56,9 @@
     <div class="mt-3 flex items-center justify-between rounded-full border border-gray-200/70 dark:border-gray-800/80 bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl shadow-sm shadow-gray-900/5 dark:shadow-black/40 px-3 sm:px-4 py-2.5">
       <div class="flex items-center gap-3">
         <a href={user && user.id ? '/dashboard' : '/'} use:inertia class="flex items-center gap-2">
-          <img src="/public/logo.png" alt="QRScan" class="h-8 w-8 rounded-lg">
+          <img src="/public/logo.png" alt="QRKan" class="h-8 w-8 rounded-lg">
           <div class="hidden sm:flex flex-col leading-tight">
-            <span class="text-sm font-semibold text-gray-900 dark:text-white">QRScan</span>
+            <span class="text-sm font-semibold text-gray-900 dark:text-white">QRKan</span>
           </div>
         </a>
       </div>

@@ -11,7 +11,7 @@
         Kebijakan Privasi
       </p>
       <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
-        Kebijakan Privasi QRScan
+        Kebijakan Privasi QRKan
       </h1>
       <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
         Terakhir diperbarui: 19 November 2025
@@ -19,7 +19,7 @@
     </header>
 
     <p>
-      Kebijakan Privasi ini menjelaskan bagaimana QRScan mengumpulkan, menggunakan, menyimpan, dan melindungi
+      Kebijakan Privasi ini menjelaskan bagaimana QRKan mengumpulkan, menggunakan, menyimpan, dan melindungi
       data pribadi yang Anda berikan saat menggunakan layanan kami untuk pengelolaan event dan sistem kehadiran
       berbasis QR code.
     </p>
@@ -45,7 +45,7 @@
       </h2>
       <p>Data yang kami kumpulkan digunakan untuk:</p>
       <ul class="list-disc pl-5 space-y-1">
-        <li>Menyediakan dan mengoperasikan fitur QRScan (pembuatan event, tiket, dan proses check-in).</li>
+        <li>Menyediakan dan mengoperasikan fitur QRKan (pembuatan event, tiket, dan proses check-in).</li>
         <li>Mengelola akses pengguna sesuai peran (organizer, gate operator, admin).</li>
         <li>Mengirimkan notifikasi terkait event atau akun (misalnya tiket, reset password, atau informasi teknis).</li>
         <li>Memantau dan meningkatkan keamanan sistem, termasuk pencegahan double-scan dan penyalahgunaan tiket.</li>
@@ -57,7 +57,7 @@
         3. Pembayaran & Mitra Payment Gateway
       </h2>
       <p>
-        Untuk transaksi online tertentu, QRScan dapat bekerja sama dengan mitra payment gateway pihak ketiga
+        Untuk transaksi online tertentu, QRKan dapat bekerja sama dengan mitra payment gateway pihak ketiga
         (saat ini Tripay) untuk memproses pembayaran. Data yang dapat dibagikan ke mitra antara lain:
       </p>
       <ul class="list-disc pl-5 space-y-1">
@@ -67,7 +67,7 @@
       </ul>
       <p>
         Detail sensitif pembayaran (seperti data kartu) diproses langsung oleh mitra payment gateway sesuai standar
-        keamanan mereka dan tidak disimpan oleh QRScan.
+        keamanan mereka dan tidak disimpan oleh QRKan.
       </p>
     </section>
 
@@ -83,7 +83,7 @@
       </ul>
       <p>
         Meskipun kami telah menerapkan langkah keamanan yang wajar, tidak ada sistem yang sepenuhnya bebas risiko.
-        Kami menganjurkan Anda menjaga kerahasiaan kredensial login dan mengakses QRScan hanya dari perangkat yang
+        Kami menganjurkan Anda menjaga kerahasiaan kredensial login dan mengakses QRKan hanya dari perangkat yang
         Anda percaya.
       </p>
     </section>
@@ -94,9 +94,9 @@
       </h2>
       <p>Anda dapat mengajukan permintaan untuk:</p>
       <ul class="list-disc pl-5 space-y-1">
-        <li>Melihat atau memperbarui data akun yang tersimpan di QRScan.</li>
+        <li>Melihat atau memperbarui data akun yang tersimpan di QRKan.</li>
         <li>Memperbaiki kesalahan data jika terdapat informasi yang tidak akurat.</li>
-        <li>Menonaktifkan akun jika sudah tidak ingin menggunakan layanan QRScan.</li>
+        <li>Menonaktifkan akun jika sudah tidak ingin menggunakan layanan QRKan.</li>
       </ul>
     </section>
 
@@ -115,7 +115,7 @@
         7. Kontak
       </h2>
       <p>
-        Jika Anda memiliki pertanyaan terkait Kebijakan Privasi ini atau penggunaan data pribadi di QRScan,
+        Jika Anda memiliki pertanyaan terkait Kebijakan Privasi ini atau penggunaan data pribadi di QRKan,
         Anda dapat menghubungi kami melalui:
       </p>
       <ul class="list-disc pl-5 space-y-1">

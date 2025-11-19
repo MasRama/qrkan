@@ -262,7 +262,7 @@
           Semua alur kehadiran di satu aplikasi
         </h2>
         <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300">
-          Dari registrasi hingga laporan akhir, QRScan membantu mengurangi titik rawan error di setiap
+          Dari registrasi hingga laporan akhir, QRKan membantu mengurangi titik rawan error di setiap
           tahapan. Tanpa copy-paste data, tanpa verifikasi manual yang melelahkan.
         </p>
       </div>
@@ -470,11 +470,11 @@
       <div class="rounded-3xl bg-white/5 border border-white/20 px-6 py-10 sm:px-10 sm:py-12 text-center sm:text-left flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
         <div>
           <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">
-            Siap pakai QRScan di event berikutnya?
+            Siap pakai QRKan di event berikutnya?
           </h2>
           <p class="text-sm sm:text-base text-primary-50/90 max-w-xl">
             Masuk ke dashboard, buat event, dan coba alur check-in dengan timmu. Mulai dari event internal kecil
-            sampai acara besar, QRScan bantu jagain flow kehadiran.
+            sampai acara besar, QRKan bantu jagain flow kehadiran.
           </p>
         </div>
 
@@ -484,7 +484,7 @@
             use:inertia
             class="inline-flex items-center justify-center rounded-xl bg-white text-primary-700 px-6 py-3 text-sm sm:text-base font-semibold shadow-md hover:bg-primary-50 transition-colors"
           >
-            Masuk ke dashboard QRScan
+            Masuk ke dashboard QRKan
           </a>
         </div>
       </div>
@@ -495,7 +495,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 text-xs sm:text-sm">
       <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
         <div class="space-y-1">
-          <p class="font-medium text-gray-200">QRScan</p>
+          <p class="font-medium text-gray-200">QRKan</p>
           <p class="text-gray-500 max-w-md">
             Dibangun di atas laju.dev stack (HyperExpress, Svelte, Inertia) untuk membantu penyelenggara event
             mengelola tiket dan kehadiran dengan rapi.
@@ -526,7 +526,7 @@
 
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-gray-800/60 pt-4">
         <p class="text-gray-500">
-          &copy; {new Date().getFullYear()} QRScan. Seluruh hak cipta dilindungi.
+          &copy; {new Date().getFullYear()} QRKan. Seluruh hak cipta dilindungi.
         </p>
         <p class="text-gray-600 text-[11px] sm:text-xs">
           Fokus ke experience di gate, bukan hanya tampilan admin.

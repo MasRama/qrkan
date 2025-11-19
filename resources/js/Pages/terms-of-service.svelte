@@ -11,7 +11,7 @@
         Ketentuan Layanan
       </p>
       <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text白">
-        Ketentuan Layanan QRScan
+        Ketentuan Layanan QRKan
       </h1>
       <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
         Terakhir diperbarui: 19 November 2025
@@ -19,8 +19,8 @@
     </header>
 
     <p>
-      Dengan menggunakan QRScan, Anda setuju untuk terikat dengan Ketentuan Layanan ini. Jika Anda tidak menyetujui
-      sebagian atau seluruh ketentuan, harap tidak menggunakan layanan QRScan.
+      Dengan menggunakan QRKan, Anda setuju untuk terikat dengan Ketentuan Layanan ini. Jika Anda tidak menyetujui
+      sebagian atau seluruh ketentuan, harap tidak menggunakan layanan QRKan.
     </p>
 
     <section class="space-y-3">
@@ -28,7 +28,7 @@
         1. Deskripsi Layanan
       </h2>
       <p>
-        QRScan adalah layanan berbasis web yang membantu penyelenggara event dalam mengelola tiket dan kehadiran
+        QRKan adalah layanan berbasis web yang membantu penyelenggara event dalam mengelola tiket dan kehadiran
         peserta menggunakan QR code, termasuk pembuatan event, distribusi e-ticket, dan proses check-in di gate.
       </p>
     </section>
@@ -48,11 +48,11 @@
       <h2 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
         3. Penggunaan yang Dilarang
       </h2>
-      <p>Anda dilarang menggunakan QRScan untuk:</p>
+      <p>Anda dilarang menggunakan QRKan untuk:</p>
       <ul class="list-disc pl-5 space-y-1">
         <li>Kegiatan yang melanggar hukum atau peraturan yang berlaku di Indonesia.</li>
         <li>Mendistribusikan konten yang melanggar hak cipta, menyesatkan, atau merugikan pihak lain.</li>
-        <li>Mengupayakan akses tidak sah ke sistem, database, atau infrastruktur QRScan.</li>
+        <li>Mengupayakan akses tidak sah ke sistem, database, atau infrastruktur QRKan.</li>
       </ul>
     </section>
 
@@ -70,12 +70,12 @@
           melakukan pembayaran.
         </li>
         <li>
-          Status keberhasilan pembayaran mengikuti konfirmasi dari sistem Tripay. QRScan menampilkan status tersebut
+          Status keberhasilan pembayaran mengikuti konfirmasi dari sistem Tripay. QRKan menampilkan status tersebut
           di dashboard/event Anda.
         </li>
         <li>
           Kebijakan refund, pembatalan, dan penjadwalan ulang event merupakan kebijakan masing-masing penyelenggara
-          event. QRScan dan Tripay hanya menyediakan infrastruktur pembayaran dan pencatatan transaksi.
+          event. QRKan dan Tripay hanya menyediakan infrastruktur pembayaran dan pencatatan transaksi.
         </li>
       </ul>
     </section>
@@ -85,7 +85,7 @@
         5. Batas Tanggung Jawab
       </h2>
       <p>
-        QRScan berupaya menjaga layanan tetap stabil dan dapat diandalkan, namun Anda memahami bahwa:
+        QRKan berupaya menjaga layanan tetap stabil dan dapat diandalkan, namun Anda memahami bahwa:
       </p>
       <ul class="list-disc pl-5 space-y-1">
         <li>
@@ -93,7 +93,7 @@
           sistem).
         </li>
         <li>
-          QRScan tidak bertanggung jawab atas kerugian tidak langsung, kehilangan keuntungan, atau kerusakan lain yang
+          QRKan tidak bertanggung jawab atas kerugian tidak langsung, kehilangan keuntungan, atau kerusakan lain yang
           muncul akibat penggunaan atau ketidakmampuan menggunakan layanan.
         </li>
         <li>
@@ -108,7 +108,7 @@
       </h2>
       <p>
         Kami berhak untuk menangguhkan atau mengakhiri akses ke akun/layanan jika ditemukan pelanggaran terhadap
-        Ketentuan Layanan ini, penyalahgunaan sistem, atau aktivitas lain yang berpotensi merugikan QRScan maupun
+        Ketentuan Layanan ini, penyalahgunaan sistem, atau aktivitas lain yang berpotensi merugikan QRKan maupun
         pengguna lain.
       </p>
     </section>
