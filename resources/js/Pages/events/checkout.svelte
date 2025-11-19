@@ -61,8 +61,8 @@
       <div>
         <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white">{event.name}</h1>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-300 max-w-2xl">
-          Pilih seat dan isi data kontak kamu. Pembayaran masih dummy, jadi setelah klik beli kamu langsung
-          mendapatkan QR tiket.
+          Pilih seat dan isi data kontak kamu. Pembayaran akan diproses melalui gateway Tripay (mode sandbox untuk
+          pengujian), lalu kamu akan mendapatkan QR tiket.
         </p>
       </div>
       <div class="flex flex-wrap gap-3 text-[11px] text-gray-500 dark:text-gray-400">
@@ -199,8 +199,8 @@
       <aside class="rounded-2xl bg-gradient-to-br from-primary-600 via-emerald-500 to-sky-500 text-white px-4 sm:px-5 py-4 shadow-md">
         <h2 class="text-sm sm:text-base font-semibold mb-2">Catatan penting</h2>
         <ul class="text-[11px] sm:text-xs space-y-1.5 text-primary-50/95">
-          <li>• Ini masih simulasi pembayaran (dummy). Tidak ada pembayaran yang diproses.</li>
-          <li>• Setelah klik "Beli tiket" kamu langsung mendapatkan QR yang bisa dipakai untuk masuk gate.</li>
+          <li>• Pembayaran menggunakan Tripay Payment Gateway dalam mode sandbox (uji coba).</li>
+          <li>• Setelah menyelesaikan pembayaran, kamu akan mendapatkan QR yang bisa dipakai untuk masuk gate.</li>
           <li>• Simpan QR tersebut dan jangan dibagikan ke orang lain.</li>
         </ul>
       </aside>

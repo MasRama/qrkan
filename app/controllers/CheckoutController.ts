@@ -5,6 +5,7 @@ import { uuidv7 } from "uuidv7";
 import QRCodeService from "../services/QRCode";
 import fs from "fs";
 import path from "path";
+import TripayService from "../services/Tripay";
 
 class CheckoutController {
   public async form(request: Request, response: Response) {
@@ -146,6 +147,45 @@ class CheckoutController {
 
     if (!ticket) {
       return response.redirect(`/events/${eventId}/checkout`);
+    }
+
+    // Try to create a Tripay transaction in sandbox/production mode.
+    // If anything fails or Tripay is not configured, gracefully fall back
+    // to the existing local success page.
+    let checkoutUrl: string | null = null;
+
+    try {
+      const appUrlBase = (process.env.APP_URL || `http://localhost:${process.env.PORT || 5555}`).replace(/\/$/, "");
+
+      const callbackUrl = `${appUrlBase}/payment/tripay/callback`;
+      const returnUrl = `${appUrlBase}/checkout/${ticket.token}/success`;
+
+      const tripayResponse: any = await TripayService.createTransaction({
+        amount: Number(seat.price),
+        merchantRef: ticket.id,
+        customerName: name,
+        customerEmail: email || null,
+        customerPhone: phone || null,
+        items: [
+          {
+            name: `${event.name} - ${seat.name}`,
+            price: Number(seat.price),
+            quantity: 1,
+          },
+        ],
+        callbackUrl,
+        returnUrl,
+      });
+
+      if (tripayResponse && tripayResponse.success && tripayResponse.data && tripayResponse.data.checkout_url) {
+        checkoutUrl = tripayResponse.data.checkout_url as string;
+      }
+    } catch (err) {
+      console.error("[Tripay] Failed to create transaction", err);
+    }
+
+    if (checkoutUrl) {
+      return response.redirect(checkoutUrl);
     }
 
     return response.redirect(`/checkout/${ticket.token}/success`);

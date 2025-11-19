@@ -9,6 +9,7 @@ const uuidv7_1 = require("uuidv7");
 const QRCode_1 = __importDefault(require("../services/QRCode"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const Tripay_1 = __importDefault(require("../services/Tripay"));
 class CheckoutController {
     async form(request, response) {
         const eventId = request.params.id;
@@ -126,6 +127,37 @@ class CheckoutController {
         }
         if (!ticket) {
             return response.redirect(`/events/${eventId}/checkout`);
+        }
+        let checkoutUrl = null;
+        try {
+            const appUrlBase = (process.env.APP_URL || `http://localhost:${process.env.PORT || 5555}`).replace(/\/$/, "");
+            const callbackUrl = `${appUrlBase}/payment/tripay/callback`;
+            const returnUrl = `${appUrlBase}/checkout/${ticket.token}/success`;
+            const tripayResponse = await Tripay_1.default.createTransaction({
+                amount: Number(seat.price),
+                merchantRef: ticket.id,
+                customerName: name,
+                customerEmail: email || null,
+                customerPhone: phone || null,
+                items: [
+                    {
+                        name: `${event.name} - ${seat.name}`,
+                        price: Number(seat.price),
+                        quantity: 1,
+                    },
+                ],
+                callbackUrl,
+                returnUrl,
+            });
+            if (tripayResponse && tripayResponse.success && tripayResponse.data && tripayResponse.data.checkout_url) {
+                checkoutUrl = tripayResponse.data.checkout_url;
+            }
+        }
+        catch (err) {
+            console.error("[Tripay] Failed to create transaction", err);
+        }
+        if (checkoutUrl) {
+            return response.redirect(checkoutUrl);
         }
         return response.redirect(`/checkout/${ticket.token}/success`);
     }

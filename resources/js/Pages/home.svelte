@@ -262,7 +262,7 @@
           Semua alur kehadiran di satu aplikasi
         </h2>
         <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300">
-          Dari registrasi hingga laporan akhir, QRKan membantu mengurangi titik rawan error di setiap
+          Dari registrasi hingga laporan akhir, QRScan membantu mengurangi titik rawan error di setiap
           tahapan. Tanpa copy-paste data, tanpa verifikasi manual yang melelahkan.
         </p>
       </div>
@@ -470,11 +470,11 @@
       <div class="rounded-3xl bg-white/5 border border-white/20 px-6 py-10 sm:px-10 sm:py-12 text-center sm:text-left flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
         <div>
           <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">
-            Siap pakai QRKan di event berikutnya?
+            Siap pakai QRScan di event berikutnya?
           </h2>
           <p class="text-sm sm:text-base text-primary-50/90 max-w-xl">
             Masuk ke dashboard, buat event, dan coba alur check-in dengan timmu. Mulai dari event internal kecil
-            sampai acara besar, QRKan bantu jagain flow kehadiran.
+            sampai acara besar, QRScan bantu jagain flow kehadiran.
           </p>
         </div>
 
@@ -484,7 +484,7 @@
             use:inertia
             class="inline-flex items-center justify-center rounded-xl bg-white text-primary-700 px-6 py-3 text-sm sm:text-base font-semibold shadow-md hover:bg-primary-50 transition-colors"
           >
-            Masuk ke dashboard QRKan
+            Masuk ke dashboard QRScan
           </a>
         </div>
       </div>
@@ -493,7 +493,7 @@
 
   <section class="py-14 bg-gray-950 text-gray-400">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
-      <p>QRKan · Dibangun di atas laju.dev stack (HyperExpress, Svelte, Inertia).</p>
+      <p>QRScan · Dibangun di atas laju.dev stack (HyperExpress, Svelte, Inertia).</p>
       <p class="text-gray-500">Fokus ke experience di gate, bukan hanya tampilan admin.</p>
     </div>
   </section>

@@ -17,11 +17,13 @@ const S3Controller_1 = __importDefault(require("../app/controllers/S3Controller"
 const hyper_express_1 = __importDefault(require("hyper-express"));
 const SeatController_1 = __importDefault(require("../app/controllers/SeatController"));
 const CheckoutController_1 = __importDefault(require("../app/controllers/CheckoutController"));
+const PaymentController_1 = __importDefault(require("../app/controllers/PaymentController"));
 const Route = new hyper_express_1.default.Router();
 Route.get("/", HomeController_1.default.index);
 Route.get("/events/:id/checkout", CheckoutController_1.default.form);
 Route.post("/events/:id/checkout", CheckoutController_1.default.submit);
 Route.get("/checkout/:token/success", CheckoutController_1.default.success);
+Route.post("/payment/tripay/callback", PaymentController_1.default.tripayCallback);
 Route.post("/api/s3/signed-url", [auth_1.default], S3Controller_1.default.getSignedUrl);
 Route.get("/api/s3/public-url/:fileKey", S3Controller_1.default.getPublicUrl);
 Route.get("/api/s3/health", S3Controller_1.default.health);

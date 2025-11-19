@@ -12,6 +12,7 @@ import S3Controller from "../app/controllers/S3Controller";
 import HyperExpress from 'hyper-express';
 import SeatController from "../app/controllers/SeatController";
 import CheckoutController from "../app/controllers/CheckoutController";
+import PaymentController from "../app/controllers/PaymentController";
 
 const Route = new HyperExpress.Router();
 
@@ -27,6 +28,9 @@ Route.get("/", HomeController.index);
 Route.get("/events/:id/checkout", CheckoutController.form);
 Route.post("/events/:id/checkout", CheckoutController.submit);
 Route.get("/checkout/:token/success", CheckoutController.success);
+
+// Tripay payment callback (sandbox/production)
+Route.post("/payment/tripay/callback", PaymentController.tripayCallback);
 
 /**
  * S3 Routes
