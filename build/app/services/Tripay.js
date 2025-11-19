@@ -13,8 +13,8 @@ const TRIPAY_MERCHANT_CODE = process.env.TRIPAY_MERCHANT_CODE || "";
 const TRIPAY_MODE = (process.env.TRIPAY_MODE || "production").toLowerCase();
 const TRIPAY_DEFAULT_METHOD = process.env.TRIPAY_DEFAULT_METHOD || "";
 const BASE_URL = TRIPAY_MODE === "sandbox"
-    ? "https://payment.tripay.co.id/api-sandbox"
-    : "https://payment.tripay.co.id/api";
+    ? "https://tripay.co.id/api-sandbox"
+    : "https://tripay.co.id/api";
 if (!TRIPAY_API_KEY || !TRIPAY_PRIVATE_KEY || !TRIPAY_MERCHANT_CODE) {
     console.warn("[Tripay] Environment variables TRIPAY_API_KEY, TRIPAY_PRIVATE_KEY, TRIPAY_MERCHANT_CODE are not fully set. Tripay integration will be disabled until they are configured.");
 }
@@ -31,11 +31,11 @@ const http = axios_1.default.create({
     },
     timeout: 15000,
 });
-function createSignature(method, merchantRef) {
+function createSignature(amount, merchantRef) {
     if (!TRIPAY_PRIVATE_KEY || !TRIPAY_MERCHANT_CODE) {
         throw new Error("Tripay private key or merchant code is not configured. Please set TRIPAY_PRIVATE_KEY and TRIPAY_MERCHANT_CODE.");
     }
-    const payload = `${TRIPAY_MERCHANT_CODE}${method}${merchantRef}`;
+    const payload = `${TRIPAY_MERCHANT_CODE}${merchantRef}${amount}`;
     return crypto_1.default.createHmac("sha256", TRIPAY_PRIVATE_KEY).update(payload).digest("hex");
 }
 async function createTransaction(options) {
@@ -46,7 +46,7 @@ async function createTransaction(options) {
     if (!method) {
         throw new Error("Tripay payment method is not specified. Provide options.method or configure TRIPAY_DEFAULT_METHOD.");
     }
-    const signature = createSignature(method, options.merchantRef);
+    const signature = createSignature(options.amount, options.merchantRef);
     const expiredMinutes = options.expiredMinutes && options.expiredMinutes > 0 ? options.expiredMinutes : 60;
     const expiredTime = Math.floor(Date.now() / 1000) + expiredMinutes * 60;
     const payload = {
