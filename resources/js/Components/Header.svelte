@@ -45,6 +45,7 @@
       if (target) {
         event.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        isMenuOpen = false;
       }
     }
   };
@@ -65,14 +66,23 @@
       <!-- Desktop Menu -->
       <nav class="hidden md:flex items-center gap-1 lg:gap-2">
         {#each menuLinks.filter((item) => item.show) as item}
-          <a
-            use:inertia
-            href={item.href}
-            on:click={(event) => handleNavClick(event, item.href)}
-            class="relative px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/70 dark:hover:bg-gray-800/80"
-          >
-            <span>{item.label}</span>
-          </a>
+          {#if group === 'home' && item.href && item.href.includes('#')}
+            <button
+              type="button"
+              on:click={(event) => handleNavClick(event, item.href)}
+              class="relative px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/70 dark:hover:bg-gray-800/80"
+            >
+              <span>{item.label}</span>
+            </button>
+          {:else}
+            <a
+              use:inertia
+              href={item.href}
+              class="relative px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/70 dark:hover:bg-gray-800/80"
+            >
+              <span>{item.label}</span>
+            </a>
+          {/if}
         {/each}
       </nav>
 
@@ -204,14 +214,23 @@
           </p>
           <div class="flex flex-col space-y-1">
             {#each menuLinks.filter((item) => item.show) as item}
-              <a
-                href={item.href}
-                use:inertia
-                on:click={(event) => handleNavClick(event, item.href)}
-                class="mobile-nav-link dark:text-gray-200 dark:hover:bg-gray-800/90 dark:hover:text-white {item.group === group ? 'active' : ''}"
-              >
-                {item.label}
-              </a>
+              {#if group === 'home' && item.href && item.href.includes('#')}
+                <button
+                  type="button"
+                  on:click={(event) => handleNavClick(event, item.href)}
+                  class="mobile-nav-link dark:text-gray-200 dark:hover:bg-gray-800/90 dark:hover:text-white {item.group === group ? 'active' : ''}"
+                >
+                  {item.label}
+                </button>
+              {:else}
+                <a
+                  href={item.href}
+                  use:inertia
+                  class="mobile-nav-link dark:text-gray-200 dark:hover:bg-gray-800/90 dark:hover:text-white {item.group === group ? 'active' : ''}"
+                >
+                  {item.label}
+                </a>
+              {/if}
             {/each}
           </div>
         </div>

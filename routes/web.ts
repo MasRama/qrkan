@@ -9,6 +9,7 @@ import Role from "../app/middlewares/role";
 import HomeController from "../app/controllers/HomeController";
 import AssetController from "../app/controllers/AssetController";
 import S3Controller from "../app/controllers/S3Controller";
+import LegalController from "../app/controllers/LegalController";
 import HyperExpress from 'hyper-express';
 import SeatController from "../app/controllers/SeatController";
 import CheckoutController from "../app/controllers/CheckoutController";
@@ -23,6 +24,10 @@ const Route = new HyperExpress.Router();
  * GET  / - Home page
  */
 Route.get("/", HomeController.index);
+
+// Legal pages (used for compliance & payment gateway review)
+Route.get("/privacy-policy", LegalController.privacy);
+Route.get("/terms-of-service", LegalController.terms);
 
 // Public checkout (dummy payment) routes
 Route.get("/events/:id/checkout", CheckoutController.form);

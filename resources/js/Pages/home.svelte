@@ -491,10 +491,47 @@
     </div>
   </section>
 
-  <section class="py-14 bg-gray-950 text-gray-400">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
-      <p>QRScan · Dibangun di atas laju.dev stack (HyperExpress, Svelte, Inertia).</p>
-      <p class="text-gray-500">Fokus ke experience di gate, bukan hanya tampilan admin.</p>
+  <section class="border-t border-gray-800/60 bg-gray-950 text-gray-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 text-xs sm:text-sm">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+        <div class="space-y-1">
+          <p class="font-medium text-gray-200">QRScan</p>
+          <p class="text-gray-500 max-w-md">
+            Dibangun di atas laju.dev stack (HyperExpress, Svelte, Inertia) untuk membantu penyelenggara event
+            mengelola tiket dan kehadiran dengan rapi.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 sm:gap-10">
+          <div class="space-y-2">
+            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">Legal</p>
+            <a href="/privacy-policy" class="block text-gray-300 hover:text-white">Kebijakan Privasi</a>
+            <a href="/terms-of-service" class="block text-gray-300 hover:text-white">Ketentuan Layanan</a>
+          </div>
+
+          <div class="space-y-2">
+            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">Support</p>
+            <p>
+              Kontak Support:
+              <a
+                href="https://wa.me/6282131143178"
+                class="ml-1 font-medium text-primary-400 hover:text-primary-300"
+              >
+                082131143178
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-gray-800/60 pt-4">
+        <p class="text-gray-500">
+          &copy; {new Date().getFullYear()} QRScan. Seluruh hak cipta dilindungi.
+        </p>
+        <p class="text-gray-600 text-[11px] sm:text-xs">
+          Fokus ke experience di gate, bukan hanya tampilan admin.
+        </p>
+      </div>
     </div>
   </section>
 </main>
